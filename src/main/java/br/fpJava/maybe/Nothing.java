@@ -7,7 +7,7 @@ package br.fpJava.maybe;
 public class Nothing extends Maybe<Object>{
     private static Nothing ourInstance = null;
 
-    public static Nothing none() {
+    public static Maybe<?> none() {
         if(ourInstance == null){
             ourInstance = new Nothing();
         }
