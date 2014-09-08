@@ -45,7 +45,7 @@ public class MaybeTest {
             }
         });
 
-        assertTrue(mdb.get() == 3.0);
+        assertTrue(mdb.get().equals(3.0));
     }
 
     @Test
@@ -57,7 +57,7 @@ public class MaybeTest {
             }
         });
 
-        assertTrue(mbd.get() == 4.0);
+        assertTrue(mbd.get().equals(4.0));
     }
 
     @Test(expected = NoSuchElementException.class)
@@ -71,12 +71,12 @@ public class MaybeTest {
     public void testGetOrElse(){
         Maybe<Double> mdb = div.apply(4.0).apply(2.0);
 
-        assertTrue(((Double) mdb.getOrElse(new Fn<Object>() {
+        assertTrue(mdb.getOrElse(new Fn<Object>() {
             @Override
             public Object apply() {
                 return "Error";
             }
-        })) == 2.0);
+        }).equals(2.0));
     }
 
 }
