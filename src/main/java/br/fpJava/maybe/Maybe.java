@@ -1,7 +1,11 @@
 package br.fpJava.maybe;
 
+import br.fpJava.fn.Fn;
 import br.fpJava.fn.Fn1;
 import br.fpJava.typeclasses.Monad;
+
+import java.util.NoSuchElementException;
+
 import static br.fpJava.maybe.Nothing.none;
 
 /**
@@ -27,4 +31,8 @@ public abstract class Maybe<A> implements Monad<Maybe, A>{
             return (Just<B>) f.apply(j.a);
         }
     }
+
+    public abstract Object getOrElse(Fn<Object> v);
+
+    public abstract A get() throws NoSuchElementException;
 }
