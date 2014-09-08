@@ -4,7 +4,7 @@ import br.fpJava.fn.Fn;
 import br.fpJava.fn.Fn1;
 import br.fpJava.maybe.Just;
 import br.fpJava.maybe.Maybe;
-import static br.fpJava.maybe.Nothing.none;
+import static br.fpJava.maybe.Nothing.nothing;
 
 import br.fpJava.typeclasses.Monad;
 import org.junit.Test;
@@ -26,7 +26,7 @@ public class MaybeTest {
                 @Override
                 public Maybe<Double> apply(final Double b) {
                     if(b == 0) {
-                        return (Maybe<Double>) none();
+                        return (Maybe<Double>) nothing();
                     } else {
                         return new Just<>(a / b);
                     }

@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
 public class Nothing extends Maybe<Object>{
     private static Nothing ourInstance = null;
 
-    public static Maybe<?> none() {
+    public static Maybe<?> nothing() {
         if(ourInstance == null){
             ourInstance = new Nothing();
         }
