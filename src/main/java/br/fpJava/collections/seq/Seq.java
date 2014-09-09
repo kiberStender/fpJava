@@ -120,22 +120,27 @@ public abstract class Seq<A> extends br.fpJava.collections.Iterable<Seq, A> {
     }
 
     @Override
-    public <B> Monad<Seq, B> map(Fn1<A, B> f) {
-        return null;
-    }
-
-    @Override
-    public <B> Seq<B> flatMap(final Fn1<A, Monad<Seq, B>> f) {
+    public <B> Seq<B> map(final Fn1<A, B> f) {
         return foldRight((Seq<B>) seq(), new Fn1<A, Fn1<Seq<B>, Seq<B>>>() {
             @Override
             public Fn1<Seq<B>, Seq<B>> apply(final A item) {
                 return new Fn1<Seq<B>, Seq<B>>() {
                     @Override
                     public Seq<B> apply(Seq<B> acc) {
-                        return null;//acc.cons((Seq<B>) f.apply(item));
+                        return acc.cons(f.apply(item));
                     }
                 };
             }
         });
+    }
+
+    @Override
+    public <B> Seq<B> flatMap(final Fn1<A, Monad<Seq, B>> f) {
+        if(this instanceof Nil){
+            return (Seq<B>) nil();
+        } else {
+            Cons<A> c = (Cons<A>) this;
+            return c.tail.flatMap(f).concat((Seq<B>) f.apply(c.head));
+        }
     }
 }
