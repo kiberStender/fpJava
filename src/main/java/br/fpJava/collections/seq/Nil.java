@@ -6,11 +6,7 @@ package br.fpJava.collections.seq;
 public class Nil extends Seq<Object>{
     private static Nil ourInstance = null;
 
-    public static Seq<?
-
-
-
-            > nil() {
+    public static Seq<?> nil() {
         if(ourInstance == null){
             ourInstance = new Nil();
         }
