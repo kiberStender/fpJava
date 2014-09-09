@@ -11,4 +11,13 @@ public class Cons<A> extends Seq<A>{
         this.head = head;
         this.tail = tail;
     }
+
+    public boolean equals(Object x){
+        if(x instanceof Cons){
+            Cons<A> s = (Cons<A>) x;
+            return head.equals(s.head) && tail.equals(s.tail);
+        } else {
+            return false;
+        }
+    }
 }

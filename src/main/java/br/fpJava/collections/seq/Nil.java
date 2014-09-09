@@ -13,6 +13,10 @@ public class Nil extends Seq<Object>{
         return ourInstance;
     }
 
-    private Nil() {
+    private Nil() {}
+
+    @Override
+    public boolean equals(Object x) {
+        return x instanceof Nil;
     }
 }
