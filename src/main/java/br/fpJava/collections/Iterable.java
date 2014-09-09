@@ -1,7 +1,6 @@
 package br.fpJava.collections;
 
 import br.fpJava.fn.Fn1;
-import br.fpJava.typeclasses.Monad;
 
 /**
  * Created by sirkleber on 09/09/14.
