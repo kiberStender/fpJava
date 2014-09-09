@@ -30,7 +30,7 @@ public abstract class Seq<A> extends br.fpJava.collections.Iterable<Seq, A> {
         }
     }
 
-    public Integer lenght(){
+    public Integer length(){
         return foldLeft(0, new Fn1<Integer, Fn1<A, Integer>>() {
             @Override
             public Fn1<A, Integer> apply( final Integer acc) {
