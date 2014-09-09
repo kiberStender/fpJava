@@ -15,6 +15,24 @@ public abstract class Seq<A> extends br.fpJava.collections.Iterable<Seq, A> {
         return new Cons<>(item, this);
     }
 
+    private Fn1<Seq<A>, Seq<A>> helper(final Seq<A> acc){
+        return new Fn1<Seq<A>, Seq<A>>() {
+            @Override
+            public Seq<A> apply(final Seq<A> other) {
+                if(other instanceof Nil){
+                    return acc;
+                } else {
+                    Cons<A> c = (Cons<A>) other;
+                    return helper(acc.cons(c.head)).apply(c.tail);
+                }
+            }
+        };
+    }
+
+    public Seq<A> concat(Seq<A> prefix){
+        return helper(this).apply(prefix.reverse());
+    }
+
     public static <A> Seq<A> seq(final A ...a){
         if(a.length == 0){
             return (Seq<A>) nil();
@@ -26,7 +44,7 @@ public abstract class Seq<A> extends br.fpJava.collections.Iterable<Seq, A> {
                 tmplst = tmplst.cons(l);
             }
 
-            return tmplst.reverse();
+            return tmplst;
         }
     }
 
