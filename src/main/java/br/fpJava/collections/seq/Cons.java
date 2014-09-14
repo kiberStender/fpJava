@@ -25,7 +25,7 @@ public class Cons<A> extends Seq<A>{
     public Seq<A> tail(){ return tail_; }
 
     @Override
-    public Seq<A> init(){ return (Cons<A>) reverse().tail();}
+    public Seq<A> init(){ return ((Cons<A>) reverse()).tail_.reverse();}
 
     @Override
     public A last(){ return reverse().head(); }
