@@ -17,6 +17,12 @@ public class SeqTest {
     private Seq<Integer> s = seq(1, 2, 3);
     private Seq<Integer> seqi = new Cons<>(1, new Cons<>(2, new Cons<>(3, (Seq<Integer>) nil())));
     private Seq<String> seqs = seq("Joao", "Luiz");
+    private Fn1<Integer, Boolean> filter = new Fn1<Integer, Boolean>() {
+        @Override
+        public Boolean apply(Integer x) {
+            return x.equals(2);
+        }
+    };
 
     @Test
     public void tesEquality(){
@@ -86,5 +92,35 @@ public class SeqTest {
     @Test
     public void testConcat(){
         assertTrue(seqi.concat(s).equals(seq(1, 2, 3, 1, 2, 3)));
+    }
+
+    @Test
+    public void testReverse(){
+        assertTrue(seqi.reverse().equals(seq(3, 2, 1)));
+    }
+
+    @Test
+    public void testInit(){
+        assertTrue(seqi.init().equals(seq(1, 2)));
+    }
+
+    @Test
+    public void testLast(){
+        assertTrue(seqi.last().equals(3));
+    }
+
+    @Test
+    public void testMaybeLast() throws Exception{
+        assertTrue(seqi.maybeLast().get().equals(3));
+    }
+
+    @Test
+    public void testFilter(){
+        assertTrue(seqi.filter(filter).equals(seq(2)));
+    }
+
+    @Test
+    public void testFilterNot(){
+        assertTrue(seqi.filterNot(filter).equals(seq(1, 3)));
     }
 }
