@@ -1,23 +1,56 @@
 package br.fpJava.collections.seq;
 
+import br.fpJava.fn.Fn1;
+import br.fpJava.maybe.Just;
+import br.fpJava.maybe.Maybe;
+
+import java.util.NoSuchElementException;
+
 /**
  * Created by sirkleber on 09/09/14.
  */
 public class Cons<A> extends Seq<A>{
-    public final A head;
-    public final Seq<A> tail;
+    private final A head_;
+    private final Seq<A> tail_;
 
-    public Cons(final A head, final Seq<A> tail){
-        this.head = head;
-        this.tail = tail;
+    public Cons(final A head_, final Seq<A> tail_){
+        this.head_ = head_;
+        this.tail_ = tail_;
     }
+
+    @Override
+    public A head(){ return head_; }
+
+    @Override
+    public Seq<A> tail(){ return tail_; }
+
+    @Override
+    public Seq<A> init(){ return (Cons<A>) reverse().tail();}
+
+    @Override
+    public A last(){ return reverse().head(); }
+
+    @Override
+    public Maybe<A> maybeHead() { return new Just<>(head_); }
+
+    @Override
+    public Maybe<A> maybeLast() { return new Just<>(last()); }
 
     public boolean equals(Object x){
         if(x instanceof Cons){
             Cons<A> s = (Cons<A>) x;
-            return head.equals(s.head) && tail.equals(s.tail);
+            return head_.equals(s.head()) && tail_.equals(s.tail());
         } else {
             return false;
+        }
+    }
+
+    @Override
+    public Maybe<A> find(final Fn1<A, Boolean> p) {
+        if(p.apply(head_)){
+            return new Just<>(head_);
+        } else {
+            return tail_.find(p);
         }
     }
 }

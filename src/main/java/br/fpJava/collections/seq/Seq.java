@@ -1,14 +1,19 @@
 package br.fpJava.collections.seq;
 
+import br.fpJava.collections.*;
+import br.fpJava.collections.Iterable;
 import br.fpJava.fn.Fn1;
+import br.fpJava.maybe.Maybe;
 import br.fpJava.typeclasses.Monad;
 import static br.fpJava.collections.seq.Nil.nil;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by sirkleber on 09/09/14.
  */
+
 public abstract class Seq<A> extends br.fpJava.collections.Iterable<Seq, A> {
 
     public Seq<A> cons(A item){
@@ -23,7 +28,7 @@ public abstract class Seq<A> extends br.fpJava.collections.Iterable<Seq, A> {
                     return acc;
                 } else {
                     Cons<A> c = (Cons<A>) other;
-                    return helper(acc.cons(c.head)).apply(c.tail);
+                    return helper(acc.cons(c.head())).apply(c.tail());
                 }
             }
         };
@@ -33,18 +38,12 @@ public abstract class Seq<A> extends br.fpJava.collections.Iterable<Seq, A> {
         return helper(this).apply(prefix.reverse());
     }
 
-    public static <A> Seq<A> seq(final A ...a){
+    public static final <A> Seq<A> seq(final A... a){
         if(a.length == 0){
             return (Seq<A>) nil();
         } else {
-            java.util.List<A> list = Arrays.asList(a);
-            Seq<A> tmplst = (Seq<A>) nil();
-
-            for(A l : list){
-                tmplst = tmplst.cons(l);
-            }
-
-            return tmplst;
+            List<A> l = Arrays.asList(a);
+            return new Cons<A>(a[0], (Seq<A>) seq(l.subList(1, a.length).toArray()));
         }
     }
 
@@ -63,12 +62,12 @@ public abstract class Seq<A> extends br.fpJava.collections.Iterable<Seq, A> {
     }
 
     public String toString(){
-        return "Seq(" + foldRight("", new Fn1<A, Fn1<String, String>>() {
+        return "Seq(" + foldLeft("", new Fn1<String, Fn1<A, String>>() {
             @Override
-            public Fn1<String, String> apply(final A item) {
-                return new Fn1<String, String>() {
+            public Fn1<A, String> apply(final String acc) {
+                return new Fn1<A, String>() {
                     @Override
-                    public String apply(String acc) {
+                    public String apply(A item) {
                         if(acc.equals("")){
                             return "" + item;
                         } else {
@@ -87,11 +86,35 @@ public abstract class Seq<A> extends br.fpJava.collections.Iterable<Seq, A> {
                 return new Fn1<A, Seq<A>>() {
                     @Override
                     public Seq<A> apply(A item) {
-                        return acc.cons(item);
+                        return new Cons<A>(item, acc);
                     }
                 };
             }
         });
+    }
+
+    @Override
+    public br.fpJava.collections.Iterable<Seq, A> filter(final Fn1<A, Boolean> p) {
+        return foldRight((Seq<A>) seq(), new Fn1<A, Fn1<Seq<A>, Seq<A>>>(){
+            @Override
+            public Fn1<Seq<A>, Seq<A>> apply(final A item) {
+                return new Fn1<Seq<A>, Seq<A>>() {
+                    @Override
+                    public Seq<A> apply(final Seq<A> acc) {
+                        if(p.apply(item)){
+                            return acc.cons(item);
+                        } else {
+                            return acc;
+                        }
+                    }
+                };
+            }
+        });
+    }
+
+    @Override
+    public Iterable<Seq, A> splitAt(Integer n) {
+        return null;
     }
 
     @Override
@@ -100,7 +123,7 @@ public abstract class Seq<A> extends br.fpJava.collections.Iterable<Seq, A> {
             return acc;
         } else {
             Cons<A> c = (Cons<A>) this;
-            return c.tail.foldLeft(f.apply(acc).apply(c.head), f);
+            return c.tail().foldLeft(f.apply(acc).apply(c.head()), f);
         }
     }
 
@@ -140,7 +163,7 @@ public abstract class Seq<A> extends br.fpJava.collections.Iterable<Seq, A> {
             return (Seq<B>) nil();
         } else {
             Cons<A> c = (Cons<A>) this;
-            return c.tail.flatMap(f).concat((Seq<B>) f.apply(c.head));
+            return c.tail().flatMap(f).concat((Seq<B>) f.apply(c.head()));
         }
     }
 }
