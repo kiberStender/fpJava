@@ -8,7 +8,7 @@ import br.fpJava.typeclasses.Monad;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertTrue;
-import static br.fpJava.collections.seq.Seq.seq;
+import static br.fpJava.collections.seq.Seq.Seq;
 import static br.fpJava.collections.seq.Nil.nil;
 import static br.fpJava.tuple.Tuple2.tuple2;
 
@@ -16,9 +16,9 @@ import static br.fpJava.tuple.Tuple2.tuple2;
  * Created by sirkleber on 09/09/14.
  */
 public class SeqTest {
-    private Seq<Integer> s = seq(1, 2, 3);
+    private Seq<Integer> s = Seq(1, 2, 3);
     private Seq<Integer> seqi = new Cons<>(1, new Cons<>(2, new Cons<>(3, (Seq<Integer>) nil())));
-    private Seq<String> seqs = seq("Joao", "Luiz");
+    private Seq<String> seqs = Seq("Joao", "Luiz");
     private Fn1<Integer, Boolean> filter = new Fn1<Integer, Boolean>() {
         @Override
         public Boolean apply(Integer x) {
@@ -88,22 +88,22 @@ public class SeqTest {
 
     @Test
     public void testCons(){
-        assertTrue(seqi.cons(0).equals(seq(0, 1, 2, 3)));
+        assertTrue(seqi.cons(0).equals(Seq(0, 1, 2, 3)));
     }
 
     @Test
     public void testConcat(){
-        assertTrue(seqi.concat(s).equals(seq(1, 2, 3, 1, 2, 3)));
+        assertTrue(seqi.concat(s).equals(Seq(1, 2, 3, 1, 2, 3)));
     }
 
     @Test
     public void testReverse(){
-        assertTrue(seqi.reverse().equals(seq(3, 2, 1)));
+        assertTrue(seqi.reverse().equals(Seq(3, 2, 1)));
     }
 
     @Test
     public void testInit(){
-        assertTrue(seqi.init().equals(seq(1, 2)));
+        assertTrue(seqi.init().equals(Seq(1, 2)));
     }
 
     @Test
@@ -118,17 +118,17 @@ public class SeqTest {
 
     @Test
     public void testFilter(){
-        assertTrue(seqi.filter(filter).equals(seq(2)));
+        assertTrue(seqi.filter(filter).equals(Seq(2)));
     }
 
     @Test
     public void testFilterNot(){
-        assertTrue(seqi.filterNot(filter).equals(seq(1, 3)));
+        assertTrue(seqi.filterNot(filter).equals(Seq(1, 3)));
     }
 
     @Test
     public void testPartition(){
-        assertTrue(seqi.partition(filter).equals(tuple2(seq(2), seq(1, 3))));
+        assertTrue(seqi.partition(filter).equals(tuple2(Seq(2), Seq(1, 3))));
     }
 
     @Test
@@ -148,7 +148,7 @@ public class SeqTest {
             public Integer apply(Integer x) {
                 return x * 2;
             }
-        }).equals(seq(2, 4, 6)));
+        }).equals(Seq(2, 4, 6)));
     }
 
     @Test
@@ -156,13 +156,13 @@ public class SeqTest {
         assertTrue(seqi.flatMap(new Fn1<Integer, Monad<Seq, Integer>>() {
             @Override
             public Monad<Seq, Integer> apply(Integer x) {
-                return seq(1 + x);
+                return Seq(1 + x);
             }
-        }).equals(seq(2, 3, 4)));
+        }).equals(Seq(2, 3, 4)));
     }
 
     public void testFindWithMonad() throws Exception{
-        final Seq<Integer> nums = seq(1, 2, 3, 4, 5);
+        final Seq<Integer> nums = Seq(1, 2, 3, 4, 5);
         final Fn1<Integer, Fn1<Integer, Boolean>> find = new Fn1<Integer, Fn1<Integer, Boolean>>() {
             @Override
             public Fn1<Integer, Boolean> apply(final Integer x) {
@@ -205,6 +205,6 @@ public class SeqTest {
 
     @Test
     public void testSplit(){
-        assertTrue(seqi.splitAt(2).equals(tuple2(seq(1, 2), seq(3))));
+        assertTrue(seqi.splitAt(2).equals(tuple2(Seq(1, 2), Seq(3))));
     }
 }

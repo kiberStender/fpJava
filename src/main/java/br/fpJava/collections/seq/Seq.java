@@ -39,12 +39,12 @@ public abstract class Seq<A> extends Traversable<Seq, A> {
         return helper(this).apply(prefix.reverse());
     }
 
-    public static final <A> Seq<A> seq(final A... a){
+    public static final <A> Seq<A> Seq(final A... a){
         if(a.length == 0){
             return (Seq<A>) nil();
         } else {
             List<A> l = Arrays.asList(a);
-            return new Cons<A>(a[0], (Seq<A>) seq(l.subList(1, a.length).toArray()));
+            return new Cons<A>(a[0], (Seq<A>) Seq(l.subList(1, a.length).toArray()));
         }
     }
 
@@ -81,7 +81,7 @@ public abstract class Seq<A> extends Traversable<Seq, A> {
     }
 
     public Seq<A> reverse(){
-        return foldLeft(((Seq<A>) seq()), new Fn1<Seq<A>, Fn1<A, Seq<A>>>() {
+        return foldLeft(((Seq<A>) Seq()), new Fn1<Seq<A>, Fn1<A, Seq<A>>>() {
             @Override
             public Fn1<A, Seq<A>> apply(final Seq<A> acc) {
                 return new Fn1<A, Seq<A>>() {
@@ -96,7 +96,7 @@ public abstract class Seq<A> extends Traversable<Seq, A> {
 
     @Override
     public Seq<A> filter(final Fn1<A, Boolean> p) {
-        return foldRight((Seq<A>) seq(), new Fn1<A, Fn1<Seq<A>, Seq<A>>>(){
+        return foldRight((Seq<A>) Seq(), new Fn1<A, Fn1<Seq<A>, Seq<A>>>(){
             @Override
             public Fn1<Seq<A>, Seq<A>> apply(final A item) {
                 return new Fn1<Seq<A>, Seq<A>>() {
@@ -158,7 +158,7 @@ public abstract class Seq<A> extends Traversable<Seq, A> {
 
     @Override
     public <B> Seq<B> map(final Fn1<A, B> f) {
-        return foldRight((Seq<B>) seq(), new Fn1<A, Fn1<Seq<B>, Seq<B>>>() {
+        return foldRight((Seq<B>) Seq(), new Fn1<A, Fn1<Seq<B>, Seq<B>>>() {
             @Override
             public Fn1<Seq<B>, Seq<B>> apply(final A item) {
                 return new Fn1<Seq<B>, Seq<B>>() {
