@@ -69,5 +69,11 @@ public abstract class Traversable<T, A> extends Monad<T, A>{
         }
     }
 
-    public abstract <B> B foldRight(final B acc, final Fn1<A, Fn1<B, B>> f);
+    public <B> B foldRight(final B acc, final Fn1<A, Fn1<B, B>> f){
+        if(isEmpty()){
+            return acc;
+        } else {
+            return f.apply(head()).apply(tail().foldRight(acc, f));
+        }
+    }
 }
