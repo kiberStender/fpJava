@@ -132,16 +132,6 @@ public abstract class Seq<A> extends Traversable<Seq, A> {
     }
 
     @Override
-    public <B> B foldLeft(final B acc, final Fn1<B, Fn1<A, B>> f) {
-        if(this instanceof Nil){
-            return acc;
-        } else {
-            Cons<A> c = (Cons<A>) this;
-            return c.tail().foldLeft(f.apply(acc).apply(c.head()), f);
-        }
-    }
-
-    @Override
     public <B> B foldRight(final B acc, final Fn1<A, Fn1<B, B>> f) {
         return reverse().foldLeft(acc, new Fn1<B, Fn1<A, B>>() {
             @Override

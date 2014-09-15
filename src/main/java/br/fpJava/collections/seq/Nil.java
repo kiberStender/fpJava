@@ -23,6 +23,11 @@ public class Nil extends Seq<Object>{
     private Nil() {}
 
     @Override
+    public Boolean isEmpty() {
+        return true;
+    }
+
+    @Override
     public Object head() throws NoSuchElementException{
         throw new NoSuchElementException();
     }
@@ -55,10 +60,5 @@ public class Nil extends Seq<Object>{
     @Override
     public boolean equals(Object x) {
         return x instanceof Nil;
-    }
-
-    @Override
-    public Maybe<Object> find(Fn1<Object, Boolean> p) {
-        return (Maybe<Object>) Nothing();
     }
 }

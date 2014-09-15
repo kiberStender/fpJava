@@ -19,6 +19,11 @@ public class Cons<A> extends Seq<A>{
     }
 
     @Override
+    public Boolean isEmpty() {
+        return false;
+    }
+
+    @Override
     public A head(){ return head_; }
 
     @Override
@@ -42,15 +47,6 @@ public class Cons<A> extends Seq<A>{
             return head_.equals(s.head()) && tail_.equals(s.tail());
         } else {
             return false;
-        }
-    }
-
-    @Override
-    public Maybe<A> find(final Fn1<A, Boolean> p) {
-        if(p.apply(head_)){
-            return new Just<>(head_);
-        } else {
-            return tail_.find(p);
         }
     }
 }

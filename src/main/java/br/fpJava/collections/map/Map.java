@@ -95,6 +95,11 @@ class EmptyMap extends Map<Object, Object> {
     }
 
     @Override
+    public Boolean isEmpty() {
+        return true;
+    }
+
+    @Override
     public Tuple2<Object, Object> head() throws NoSuchElementException {
         throw new NoSuchElementException();
     }
@@ -128,11 +133,6 @@ class EmptyMap extends Map<Object, Object> {
     public <B> B foldLeft(B acc, Fn1<B, Fn1<Tuple2<Object, Object>, B>> f) {
         return acc;
     }
-
-    @Override
-    public Maybe<Tuple2<Object, Object>> find(Fn1<Tuple2<Object, Object>, Boolean> p) {
-        return (Maybe<Tuple2<Object, Object>>) Nothing();
-    }
 }
 
 class MapCons<K, V> extends Map<K, V> {
@@ -153,6 +153,11 @@ class MapCons<K, V> extends Map<K, V> {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public Boolean isEmpty() {
+        return false;
     }
 
     @Override
@@ -189,15 +194,6 @@ class MapCons<K, V> extends Map<K, V> {
 
     @Override
     public <B> B foldLeft(B acc, Fn1<B, Fn1<Tuple2<K, V>, B>> f) {
-        return tail_.foldLeft(f.apply(acc).apply(head_),f);
-    }
-
-    @Override
-    public Maybe<Tuple2<K, V>> find(Fn1<Tuple2<K, V>, Boolean> p) {
-        if(p.apply(head_)){
-            return new Just<>(head_);
-        } else {
-            return tail_.find(p);
-        }
+        return tail_.foldLeft(f.apply(acc).apply(head_), f);
     }
 }
