@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import static junit.framework.Assert.assertTrue;
 import static br.fpJava.collections.seq.Seq.Seq;
-import static br.fpJava.collections.seq.Nil.nil;
+import static br.fpJava.collections.seq.Nil.Nil;
 import static br.fpJava.tuple.Tuple2.tuple2;
 
 /**
@@ -17,7 +17,7 @@ import static br.fpJava.tuple.Tuple2.tuple2;
  */
 public class SeqTest {
     private Seq<Integer> s = Seq(1, 2, 3);
-    private Seq<Integer> seqi = new Cons<>(1, new Cons<>(2, new Cons<>(3, (Seq<Integer>) nil())));
+    private Seq<Integer> seqi = new Cons<>(1, new Cons<>(2, new Cons<>(3, (Seq<Integer>) Nil())));
     private Seq<String> seqs = Seq("Joao", "Luiz");
     private Fn1<Integer, Boolean> filter = new Fn1<Integer, Boolean>() {
         @Override

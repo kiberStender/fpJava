@@ -5,7 +5,7 @@ import br.fpJava.fn.Fn1;
 import br.fpJava.maybe.Maybe;
 import br.fpJava.tuple.Tuple2;
 import br.fpJava.typeclasses.Monad;
-import static br.fpJava.collections.seq.Nil.nil;
+import static br.fpJava.collections.seq.Nil.Nil;
 import static br.fpJava.tuple.Tuple2.tuple2;
 
 import java.util.Arrays;
@@ -41,7 +41,7 @@ public abstract class Seq<A> extends Traversable<Seq, A> {
 
     public static final <A> Seq<A> Seq(final A... a){
         if(a.length == 0){
-            return (Seq<A>) nil();
+            return (Seq<A>) Nil();
         } else {
             List<A> l = Arrays.asList(a);
             return new Cons<A>(a[0], (Seq<A>) Seq(l.subList(1, a.length).toArray()));
@@ -115,7 +115,7 @@ public abstract class Seq<A> extends Traversable<Seq, A> {
 
     private final Tuple2<Seq<A>, Seq<A>> splitR(Integer curN, Seq<A> curL, Seq<A> pre){
         if(curL instanceof Nil){
-            return tuple2(pre.reverse(), (Seq<A>) nil());
+            return tuple2(pre.reverse(), (Seq<A>) Nil());
         } else {
             if(curN.equals(0)){
                 return tuple2(pre.reverse(), (Seq<A>) curL);
@@ -128,7 +128,7 @@ public abstract class Seq<A> extends Traversable<Seq, A> {
 
     @Override
     public Tuple2<Seq<A>, Seq<A>> splitAt(Integer n) {
-        return splitR(n, this, (Seq<A>) nil());
+        return splitR(n, this, (Seq<A>) Nil());
     }
 
     @Override
@@ -174,7 +174,7 @@ public abstract class Seq<A> extends Traversable<Seq, A> {
     @Override
     public <B> Seq<B> flatMap(final Fn1<A, Monad<Seq, B>> f) {
         if(this instanceof Nil){
-            return (Seq<B>) nil();
+            return (Seq<B>) Nil();
         } else {
             Cons<A> c = (Cons<A>) this;
             return c.tail().flatMap(f).concat((Seq<B>) f.apply(c.head()));

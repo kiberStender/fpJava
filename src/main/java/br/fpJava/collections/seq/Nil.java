@@ -13,7 +13,7 @@ import java.util.NoSuchElementException;
 public class Nil extends Seq<Object>{
     private static Nil ourInstance = null;
 
-    public static Seq<?> nil() {
+    public static Seq<?> Nil() {
         if(ourInstance == null){
             ourInstance = new Nil();
         }
