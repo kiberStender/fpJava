@@ -132,21 +132,6 @@ public abstract class Seq<A> extends Traversable<Seq, A> {
     }
 
     @Override
-    public <B> B foldRight(final B acc, final Fn1<A, Fn1<B, B>> f) {
-        return reverse().foldLeft(acc, new Fn1<B, Fn1<A, B>>() {
-            @Override
-            public Fn1<A, B> apply(final B accu) {
-                return new Fn1<A, B>() {
-                    @Override
-                    public B apply(A item) {
-                        return f.apply(item).apply(accu);
-                    }
-                };
-            }
-        });
-    }
-
-    @Override
     public <B> Seq<B> map(final Fn1<A, B> f) {
         return foldRight((Seq<B>) Seq(), new Fn1<A, Fn1<Seq<B>, Seq<B>>>() {
             @Override
