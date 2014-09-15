@@ -43,7 +43,7 @@ public abstract class Iterable<I, A> extends Traversable<I, A> {
 
     public abstract Maybe<A> find(final Fn1<A, Boolean> p);
 
-    public abstract Iterable<I, A> splitAt(final Integer n);
+    public abstract Tuple2<Iterable<I, A>, Iterable<I, A>> splitAt(final Integer n);
 
     public abstract <B> B foldLeft(final B acc, final Fn1<B, Fn1<A, B>> f);
 
