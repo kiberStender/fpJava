@@ -12,7 +12,7 @@ import static br.fpJava.maybe.Nothing.nothing;
  * Created by sirkleber on 07/09/14.
  */
 
-public abstract class Maybe<A> implements Monad<Maybe, A>{
+public abstract class Maybe<A> extends Monad<Maybe, A>{
 
     public <B> Maybe<B> map(Fn1<A, B> f){
         if(this instanceof Nothing){
