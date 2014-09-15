@@ -1,7 +1,6 @@
 package br.fpJava.collections.seq;
 
 import br.fpJava.collections.*;
-import br.fpJava.collections.Iterable;
 import br.fpJava.fn.Fn1;
 import br.fpJava.maybe.Maybe;
 import br.fpJava.tuple.Tuple2;
@@ -16,7 +15,7 @@ import java.util.List;
  * Created by sirkleber on 09/09/14.
  */
 
-public abstract class Seq<A> extends br.fpJava.collections.Iterable<Seq, A> {
+public abstract class Seq<A> extends Traversable<Seq, A> {
 
     public Seq<A> cons(A item){
         return new Cons<>(item, this);
@@ -96,7 +95,7 @@ public abstract class Seq<A> extends br.fpJava.collections.Iterable<Seq, A> {
     }
 
     @Override
-    public br.fpJava.collections.Iterable<Seq, A> filter(final Fn1<A, Boolean> p) {
+    public Seq<A> filter(final Fn1<A, Boolean> p) {
         return foldRight((Seq<A>) seq(), new Fn1<A, Fn1<Seq<A>, Seq<A>>>(){
             @Override
             public Fn1<Seq<A>, Seq<A>> apply(final A item) {
@@ -114,12 +113,12 @@ public abstract class Seq<A> extends br.fpJava.collections.Iterable<Seq, A> {
         });
     }
 
-    private final Tuple2<Iterable<Seq, A>, Iterable<Seq, A>> splitR(Integer curN, Seq<A> curL, Seq<A> pre){
+    private final Tuple2<Seq<A>, Seq<A>> splitR(Integer curN, Seq<A> curL, Seq<A> pre){
         if(curL instanceof Nil){
-            return tuple2((Iterable<Seq, A>) pre.reverse(), (Iterable<Seq, A>) nil());
+            return tuple2(pre.reverse(), (Seq<A>) nil());
         } else {
             if(curN.equals(0)){
-                return tuple2((Iterable<Seq, A>) pre.reverse(), (Iterable<Seq, A>) curL);
+                return tuple2(pre.reverse(), (Seq<A>) curL);
             } else {
                 Cons<A> c = (Cons<A>) curL;
                 return splitR(curN - 1, c.tail(), pre.cons(c.head()));
@@ -128,7 +127,7 @@ public abstract class Seq<A> extends br.fpJava.collections.Iterable<Seq, A> {
     }
 
     @Override
-    public Tuple2<Iterable<Seq, A>, Iterable<Seq, A>> splitAt(Integer n) {
+    public Tuple2<Seq<A>, Seq<A>> splitAt(Integer n) {
         return splitR(n, this, (Seq<A>) nil());
     }
 
