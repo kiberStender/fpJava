@@ -7,8 +7,6 @@ import br.fpJava.maybe.Maybe;
 import br.fpJava.tuple.Tuple2;
 import br.fpJava.typeclasses.Monad;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import static br.fpJava.maybe.Nothing.nothing;
@@ -40,7 +38,7 @@ public abstract class Map<K, V> extends Traversable<Map, Tuple2<K, V>> {
     }
 
     @Override
-    public Traversable<Map, Tuple2<K, V>> filter(Fn1<Tuple2<K, V>, Boolean> p) {
+    public Map<K, V> filter(Fn1<Tuple2<K, V>, Boolean> p) {
         return null;
     }
 
@@ -50,12 +48,7 @@ public abstract class Map<K, V> extends Traversable<Map, Tuple2<K, V>> {
     }
 
     @Override
-    public <I extends Traversable<Map, Tuple2<K, V>>> Tuple2<I, I> splitAt(Integer n) {
-        return null;
-    }
-
-    @Override
-    public <B> B foldLeft(B acc, Fn1<B, Fn1<Tuple2<K, V>, B>> f) {
+    public Tuple2<Map<K, V>, Map<K, V>> splitAt(Integer n) {
         return null;
     }
 
@@ -121,6 +114,11 @@ class EmptyMap extends Map<Object, Object> {
     public Maybe<Tuple2<Object, Object>> maybeLast() {
         return (Maybe<Tuple2<Object, Object>>) nothing();
     }
+
+    @Override
+    public <B> B foldLeft(B acc, Fn1<B, Fn1<Tuple2<Object, Object>, B>> f) {
+        return acc;
+    }
 }
 
 class MapCons<K, V> extends Map<K, V> {
@@ -160,7 +158,7 @@ class MapCons<K, V> extends Map<K, V> {
     }
 
     @Override
-    public Tuple2<K, V> last() throws NoSuchElementException {
+    public Tuple2<K, V> last() {
         //TODO- Implement
         return null;
     }
@@ -173,5 +171,10 @@ class MapCons<K, V> extends Map<K, V> {
     @Override
     public Maybe<Tuple2<K, V>> maybeLast() {
         return new Just<>(last());
+    }
+
+    @Override
+    public <B> B foldLeft(B acc, Fn1<B, Fn1<Tuple2<K, V>, B>> f) {
+        return tail_.foldLeft(f.apply(acc).apply(head_),f);
     }
 }
