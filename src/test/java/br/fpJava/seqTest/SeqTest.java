@@ -202,4 +202,9 @@ public class SeqTest {
 
         assertTrue(res.get().equals(8));
     }
+
+    @Test
+    public void testSplit(){
+        assertTrue(seqi.splitAt(2).equals(tuple2(seq(1, 2), seq(3))));
+    }
 }

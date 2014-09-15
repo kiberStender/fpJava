@@ -4,8 +4,10 @@ import br.fpJava.collections.*;
 import br.fpJava.collections.Iterable;
 import br.fpJava.fn.Fn1;
 import br.fpJava.maybe.Maybe;
+import br.fpJava.tuple.Tuple2;
 import br.fpJava.typeclasses.Monad;
 import static br.fpJava.collections.seq.Nil.nil;
+import static br.fpJava.tuple.Tuple2.tuple2;
 
 import java.util.Arrays;
 import java.util.List;
@@ -112,9 +114,22 @@ public abstract class Seq<A> extends br.fpJava.collections.Iterable<Seq, A> {
         });
     }
 
+    private final Tuple2<Iterable<Seq, A>, Iterable<Seq, A>> splitR(Integer curN, Seq<A> curL, Seq<A> pre){
+        if(curL instanceof Nil){
+            return tuple2((Iterable<Seq, A>) pre.reverse(), (Iterable<Seq, A>) nil());
+        } else {
+            if(curN.equals(0)){
+                return tuple2((Iterable<Seq, A>) pre.reverse(), (Iterable<Seq, A>) curL);
+            } else {
+                Cons<A> c = (Cons<A>) curL;
+                return splitR(curN - 1, c.tail(), pre.cons(c.head()));
+            }
+        }
+    }
+
     @Override
-    public Iterable<Seq, A> splitAt(Integer n) {
-        return null;
+    public Tuple2<Iterable<Seq, A>, Iterable<Seq, A>> splitAt(Integer n) {
+        return splitR(n, this, (Seq<A>) nil());
     }
 
     @Override
