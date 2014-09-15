@@ -3,12 +3,14 @@ package br.fpJava.seqTest;
 import br.fpJava.collections.seq.Seq;
 import br.fpJava.collections.seq.Cons;
 import br.fpJava.fn.Fn1;
+import br.fpJava.maybe.Maybe;
 import br.fpJava.typeclasses.Monad;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertTrue;
 import static br.fpJava.collections.seq.Seq.seq;
 import static br.fpJava.collections.seq.Nil.nil;
+import static br.fpJava.tuple.Tuple2.tuple2;
 
 /**
  * Created by sirkleber on 09/09/14.
@@ -122,5 +124,82 @@ public class SeqTest {
     @Test
     public void testFilterNot(){
         assertTrue(seqi.filterNot(filter).equals(seq(1, 3)));
+    }
+
+    @Test
+    public void testPartition(){
+        assertTrue(seqi.partition(filter).equals(tuple2(seq(2), seq(1, 3))));
+    }
+
+    @Test
+    public void testFind() throws Exception{
+        assertTrue(seqi.find(new Fn1<Integer, Boolean>() {
+            @Override
+            public Boolean apply(Integer a) {
+                return a.equals(2);
+            }
+        }).get().equals(2));
+    }
+
+    @Test
+    public void testMap(){
+        assertTrue(seqi.map(new Fn1<Integer, Integer>() {
+            @Override
+            public Integer apply(Integer x) {
+                return x * 2;
+            }
+        }).equals(seq(2, 4, 6)));
+    }
+
+    @Test
+    public void testFlatMap(){
+        assertTrue(seqi.flatMap(new Fn1<Integer, Monad<Seq, Integer>>() {
+            @Override
+            public Monad<Seq, Integer> apply(Integer x) {
+                return seq(1 + x);
+            }
+        }).equals(seq(2, 3, 4)));
+    }
+
+    public void testFindWithMonad() throws Exception{
+        final Seq<Integer> nums = seq(1, 2, 3, 4, 5);
+        final Fn1<Integer, Fn1<Integer, Boolean>> find = new Fn1<Integer, Fn1<Integer, Boolean>>() {
+            @Override
+            public Fn1<Integer, Boolean> apply(final Integer x) {
+                return new Fn1<Integer, Boolean>() {
+                    @Override
+                    public Boolean apply(final Integer y) {
+                        return y.equals(x);
+                    }
+                };
+            }
+        };
+        final Fn1<Integer, Boolean> find1 = find.apply(1);
+        final Fn1<Integer, Boolean> find2 = find.apply(2);
+        final Fn1<Integer, Boolean> gt4 = new Fn1<Integer, Boolean>() {
+            @Override
+            public Boolean apply(Integer x) {
+                return x > 4;
+            }
+        };
+
+        final Maybe<Integer> res = nums.find(find1).flatMap(new Fn1<Integer, Monad<Maybe, Integer>>() {
+            @Override
+            public Monad<Maybe, Integer> apply(final Integer um) {
+                return nums.find(find2).flatMap(new Fn1<Integer, Monad<Maybe, Integer>>() {
+                    @Override
+                    public Monad<Maybe, Integer> apply(final Integer dois) {
+                        return nums.find(gt4).map(new Fn1<Integer, Integer>() {
+                            @Override
+                            public Integer apply(final Integer mq4) {
+                                return um + dois + mq4;
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
+        assertTrue(res.get().equals(8));
     }
 }
