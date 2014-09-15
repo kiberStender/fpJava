@@ -32,6 +32,20 @@ public abstract class Traversable<T, A> extends Monad<T, A>{
 
     public abstract Maybe<A> maybeLast();
 
+    /**
+     * Scala :: and Haskell : functions
+     * @param item the item to be appended to the collection
+     * @return a new collection
+     */
+    public abstract Traversable<T, A> cons(final A item);
+
+    /**
+     * Scala and Haskell ++ function
+     * @param prefix new collection to be concat in the end of this collection
+     * @return a new collection
+     */
+    public abstract Traversable<T, A> concat(final Traversable<T, A> prefix);
+
     public abstract Traversable<T, A> filter(final Fn1<A, Boolean> p);
 
     public Traversable<T, A> filterNot(final Fn1<A, Boolean> p){
