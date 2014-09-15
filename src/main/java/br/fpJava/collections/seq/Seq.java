@@ -35,8 +35,9 @@ public abstract class Seq<A> extends Traversable<Seq, A> {
         };
     }
 
-    public Seq<A> concat(Seq<A> prefix){
-        return helper(this).apply(prefix.reverse());
+    @Override
+    public Seq<A> concat(Traversable<Seq, A> prefix) {
+        return helper(this).apply(((Seq<A>) prefix).reverse());
     }
 
     public static final <A> Seq<A> Seq(final A... a){
