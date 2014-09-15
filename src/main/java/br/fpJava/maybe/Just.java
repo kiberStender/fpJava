@@ -24,4 +24,13 @@ public class Just<A> extends Maybe<A> {
     public Object getOrElse(Fn<Object> v) {
         return a;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Just){
+            return a.equals(((Just) obj).a);
+        } else {
+            return false;
+        }
+    }
 }

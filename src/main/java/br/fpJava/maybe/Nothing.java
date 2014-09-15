@@ -33,4 +33,9 @@ public class Nothing extends Maybe<Object>{
     public Object getOrElse(Fn<Object> v) {
         return v.apply();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Nothing;
+    }
 }

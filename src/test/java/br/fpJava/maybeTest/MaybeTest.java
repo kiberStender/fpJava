@@ -36,12 +36,22 @@ public class MaybeTest {
     };
 
     @Test
+    public void testEquality(){
+        assertTrue(div.apply(2.0).apply(2.0).equals(new Just<Double>(1.0)));
+    }
+
+    @Test
+    public void testEquality1(){
+        assertTrue(div.apply(2.0).apply(0.0).equals(nothing()));
+    }
+
+    @Test
     public void testMap() throws NoSuchElementException{
 
         Maybe<Double> mdb = div.apply(2.0).apply(2.0).map(new Fn1<Double, Double>() {
             @Override
-            public Double apply(Double aDouble) {
-                return aDouble * 3;
+            public Double apply(final Double x) {
+                return x * 3;
             }
         });
 
