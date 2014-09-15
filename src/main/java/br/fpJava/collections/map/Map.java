@@ -62,11 +62,6 @@ public abstract class Map<K, V> extends Traversable<Map, Tuple2<K, V>> {
     }
 
     @Override
-    public <B> B foldRight(B acc, Fn1<Tuple2<K, V>, Fn1<B, B>> f) {
-        return null;
-    }
-
-    @Override
     public <B> Monad<Map, B> map(Fn1<Tuple2<K, V>, B> f) {
         return null;
     }
@@ -128,11 +123,6 @@ class EmptyMap extends Map<Object, Object> {
     public Maybe<Tuple2<Object, Object>> maybeLast() {
         return (Maybe<Tuple2<Object, Object>>) Nothing();
     }
-
-    @Override
-    public <B> B foldLeft(B acc, Fn1<B, Fn1<Tuple2<Object, Object>, B>> f) {
-        return acc;
-    }
 }
 
 class MapCons<K, V> extends Map<K, V> {
@@ -190,10 +180,5 @@ class MapCons<K, V> extends Map<K, V> {
     @Override
     public Maybe<Tuple2<K, V>> maybeLast() {
         return new Just<>(last());
-    }
-
-    @Override
-    public <B> B foldLeft(B acc, Fn1<B, Fn1<Tuple2<K, V>, B>> f) {
-        return tail_.foldLeft(f.apply(acc).apply(head_), f);
     }
 }
