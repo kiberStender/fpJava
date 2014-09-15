@@ -9,7 +9,7 @@ import br.fpJava.typeclasses.Monad;
 
 import java.util.NoSuchElementException;
 
-import static br.fpJava.maybe.Nothing.nothing;
+import static br.fpJava.maybe.Nothing.Nothing;
 import static br.fpJava.collections.map.EmptyMap.empty;
 
 
@@ -37,13 +37,22 @@ public abstract class Map<K, V> extends Traversable<Map, Tuple2<K, V>> {
         }
     }
 
-    @Override
-    public Map<K, V> filter(Fn1<Tuple2<K, V>, Boolean> p) {
-        return null;
+    public final Maybe<V> get(final K key){
+        return find(new Fn1<Tuple2<K, V>, Boolean>() {
+            @Override
+            public Boolean apply(Tuple2<K, V> x) {
+                return x._1.equals(key);
+            }
+        }).map(new Fn1<Tuple2<K, V>, V>() {
+            @Override
+            public V apply(Tuple2<K, V> x) {
+                return x._2;
+            }
+        });
     }
 
     @Override
-    public Maybe<Tuple2<K, V>> find(Fn1<Tuple2<K, V>, Boolean> p) {
+    public Map<K, V> filter(Fn1<Tuple2<K, V>, Boolean> p) {
         return null;
     }
 
@@ -91,12 +100,12 @@ class EmptyMap extends Map<Object, Object> {
     }
 
     @Override
-    public <I extends Traversable<Map, Tuple2<Object, Object>>> I tail() throws NoSuchElementException {
+    public Map<Object, Object> tail() throws NoSuchElementException {
         throw new NoSuchElementException();
     }
 
     @Override
-    public <I extends Traversable<Map, Tuple2<Object, Object>>> I init() throws NoSuchElementException {
+    public Map<Object, Object> init() throws NoSuchElementException {
         throw new NoSuchElementException();
     }
 
@@ -107,17 +116,22 @@ class EmptyMap extends Map<Object, Object> {
 
     @Override
     public Maybe<Tuple2<Object, Object>> maybeHead() {
-        return (Maybe<Tuple2<Object, Object>>) nothing();
+        return (Maybe<Tuple2<Object, Object>>) Nothing();
     }
 
     @Override
     public Maybe<Tuple2<Object, Object>> maybeLast() {
-        return (Maybe<Tuple2<Object, Object>>) nothing();
+        return (Maybe<Tuple2<Object, Object>>) Nothing();
     }
 
     @Override
     public <B> B foldLeft(B acc, Fn1<B, Fn1<Tuple2<Object, Object>, B>> f) {
         return acc;
+    }
+
+    @Override
+    public Maybe<Tuple2<Object, Object>> find(Fn1<Tuple2<Object, Object>, Boolean> p) {
+        return (Maybe<Tuple2<Object, Object>>) Nothing();
     }
 }
 
@@ -176,5 +190,14 @@ class MapCons<K, V> extends Map<K, V> {
     @Override
     public <B> B foldLeft(B acc, Fn1<B, Fn1<Tuple2<K, V>, B>> f) {
         return tail_.foldLeft(f.apply(acc).apply(head_),f);
+    }
+
+    @Override
+    public Maybe<Tuple2<K, V>> find(Fn1<Tuple2<K, V>, Boolean> p) {
+        if(p.apply(head_)){
+            return new Just<>(head_);
+        } else {
+            return tail_.find(p);
+        }
     }
 }

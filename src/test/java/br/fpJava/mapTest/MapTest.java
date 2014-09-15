@@ -1,6 +1,7 @@
 package br.fpJava.mapTest;
 
 import br.fpJava.collections.map.Map;
+import br.fpJava.fn.Fn1;
 import br.fpJava.tuple.Tuple2;
 import org.junit.Test;
 
@@ -23,6 +24,21 @@ public class MapTest {
     @Test
     public void testEquality1(){
         assertTrue(!mi.equals(md));
+    }
+
+    @Test
+    public void testFind() throws Exception{
+        assertTrue(mi.find(new Fn1<Tuple2<Integer, String>, Boolean>() {
+            @Override
+            public Boolean apply(Tuple2<Integer, String> x) {
+                return x._1.equals(2);
+            }
+        }).get().equals(tuple2(2, "eduardo")));
+    }
+
+    @Test
+    public void testGet() throws Exception{
+        assertTrue(mi.get(2).get().equals("eduardo"));
     }
 
 }
