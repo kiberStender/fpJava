@@ -102,6 +102,36 @@ public class SeqTest {
     }
 
     @Test
+    public void testFoldLeft(){
+        assertTrue(seqi.foldLeft(0, new Fn1<Integer, Fn1<Integer, Integer>>() {
+            @Override
+            public Fn1<Integer, Integer> apply(final Integer acc) {
+                return new Fn1<Integer, Integer>() {
+                    @Override
+                    public Integer apply(Integer item) {
+                        return acc - item;
+                    }
+                };
+            }
+        }).equals(-6));
+    }
+
+    @Test
+    public void testFoldRight(){
+        assertTrue(seqi.foldRight(0, new Fn1<Integer, Fn1<Integer, Integer>>() {
+            @Override
+            public Fn1<Integer, Integer> apply(final Integer item) {
+                return new Fn1<Integer, Integer>() {
+                    @Override
+                    public Integer apply(Integer acc) {
+                        return item - acc;
+                    }
+                };
+            }
+        }).equals(2));
+    }
+
+    @Test
     public void testInit(){
         assertTrue(seqi.init().equals(Seq(1, 2)));
     }
