@@ -49,20 +49,6 @@ public abstract class Seq<A> extends Traversable<Seq, A> {
         }
     }
 
-    public Integer length(){
-        return foldLeft(0, new Fn1<Integer, Fn1<A, Integer>>() {
-            @Override
-            public Fn1<A, Integer> apply( final Integer acc) {
-                return new Fn1<A, Integer>() {
-                    @Override
-                    public Integer apply(A ig) {
-                        return acc + 1;
-                    }
-                };
-            }
-        });
-    }
-
     public String toString(){
         return "Seq(" + foldLeft("", new Fn1<String, Fn1<A, String>>() {
             @Override

@@ -46,6 +46,20 @@ public abstract class Traversable<T, A> extends Monad<T, A>{
      */
     public abstract Traversable<T, A> concat(final Traversable<T, A> prefix);
 
+    public Integer length(){
+        return foldLeft(0, new Fn1<Integer, Fn1<A, Integer>>() {
+            @Override
+            public Fn1<A, Integer> apply(final Integer acc) {
+                return new Fn1<A, Integer>() {
+                    @Override
+                    public Integer apply(A a) {
+                        return acc + 1;
+                    }
+                };
+            }
+        });
+    }
+
     public abstract Traversable<T, A> filter(final Fn1<A, Boolean> p);
 
     public Traversable<T, A> filterNot(final Fn1<A, Boolean> p){
