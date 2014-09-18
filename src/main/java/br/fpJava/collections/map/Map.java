@@ -1,10 +1,13 @@
 package br.fpJava.collections.map;
 
 import br.fpJava.collections.Traversable;
+import br.fpJava.fn.Fn;
 import br.fpJava.fn.Fn1;
 import br.fpJava.maybe.Just;
 import br.fpJava.maybe.Maybe;
+import br.fpJava.maybe.Nothing;
 import br.fpJava.tuple.Tuple2;
+import br.fpJava.typeclasses.Functor;
 import br.fpJava.typeclasses.Monad;
 
 import java.util.NoSuchElementException;
@@ -37,9 +40,20 @@ public abstract class Map<K extends Comparable, V> extends Traversable<Map, Tupl
         }
     }
 
+    private Map<K, V> orderer(Tuple2<K, V> m){
+        return Map(m);
+    }
+
     @Override
-    public Traversable<Map, Tuple2<K, V>> cons(Tuple2<K, V> item) {
-        return null;
+    public Map<K, V> cons(final Tuple2<K, V> item) {
+        if(length().compareTo(2) == -1){
+            if(item._1.compareTo(head()._1) == -1){
+            }
+            return Map();
+        } else {
+            Tuple2<Map<K, V>, Map<K, V>> tp = splitAt(length() / 2);
+            return tp._1;
+        }
     }
 
     @Override
@@ -86,8 +100,14 @@ public abstract class Map<K extends Comparable, V> extends Traversable<Map, Tupl
     }
 
     @Override
-    public <B> Monad<Map, B> map(Fn1<Tuple2<K, V>, B> f) {
-        return null;
+    public <B> Traversable<Map, B> map(Fn1<Tuple2<K, V>, B> f) {
+        if(isEmpty()){
+            return (Traversable<Map, B>) empty();
+        } else {
+            MapCons<K, V> m = (MapCons<K, V>) this;
+            Tuple2<K, B> b = (Tuple2<K, B>) f.apply(head());
+            return (Traversable<Map, B>) new MapCons<>(b, (Map<K, B>) tail().map(f));
+        }
     }
 
     @Override

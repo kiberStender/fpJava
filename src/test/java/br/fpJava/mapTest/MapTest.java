@@ -71,4 +71,14 @@ public class MapTest {
         }).equals(-3));
     }
 
+    @Test
+    public void testMap(){
+        assertTrue(md.map(new Fn1<Tuple2<Integer, Double>, Tuple2<Integer, Double>>() {
+            @Override
+            public Tuple2<Integer, Double> apply(Tuple2<Integer, Double> x) {
+                return tuple2(x._1, x._2 * 2);
+            }
+        }).equals(Map(tuple2(1, 4.0))));
+    }
+
 }
