@@ -10,17 +10,18 @@ import br.fpJava.tuple.Tuple2;
 import br.fpJava.typeclasses.Functor;
 import br.fpJava.typeclasses.Monad;
 
+import java.util.Comparator;
 import java.util.NoSuchElementException;
 
 import static br.fpJava.maybe.Nothing.Nothing;
-import static br.fpJava.collections.map.EmptyMap.empty;
+import static br.fpJava.collections.map.EmptyMap.emptyMap;
 
 
 /**
  * Created by sirkleber on 15/09/14.
  */
 
-public abstract class Map<K extends Comparable, V> extends Traversable<Map, Tuple2<K, V>> {
+public abstract class Map<K extends Comparable<K>, V> extends Traversable<Map, Tuple2<K, V>> {
 
     private final static <K, V> Tuple2<K, V>[] getTail(Tuple2<K, V>[] tp){
         Tuple2<K, V>[] tmp = new Tuple2[tp.length - 1];
@@ -32,27 +33,58 @@ public abstract class Map<K extends Comparable, V> extends Traversable<Map, Tupl
         return tmp;
     }
 
-    public final static <K extends Comparable, V> Map<K, V> Map(final Tuple2<K, V>... tp){
+    public final static <K extends Comparable<K>, V> Map<K, V> Map(final Tuple2<K, V>... tp){
         if(tp.length == 0){
-            return (Map<K, V>) empty();
+            return (Map<K, V>) emptyMap();
         } else {
             return new MapCons<K, V>(tp[0], Map(getTail(tp)));
         }
     }
 
-    private Map<K, V> orderer(Tuple2<K, V> m){
-        return Map(m);
+    @Override
+    public String toString() {
+        return "Map(" + foldLeft("", new Fn1<String, Fn1<Tuple2<K, V>, String>>() {
+            @Override
+            public Fn1<Tuple2<K, V>, String> apply(final String acc) {
+                return new Fn1<Tuple2<K, V>, String>() {
+                    @Override
+                    public String apply(final Tuple2<K, V> item) {
+                        if(acc.equals("")){
+                            return "(" + item._1 + " -> " + item._2 + ")";
+                        } else {
+                            return acc + "(" + item._1 + " -> " + item._2 + ")";
+                        }
+                    }
+                };
+            }
+        }) + ")";
+    }
+
+    protected Map<K, V> empty(){
+        return (Map<K, V>) emptyMap();
+    }
+
+    protected Map<K, V> add(final Tuple2<K, V> item){
+        return new MapCons<K, V>(item, this);
     }
 
     @Override
     public Map<K, V> cons(final Tuple2<K, V> item) {
-        if(length().compareTo(2) == -1){
-            if(item._1.compareTo(head()._1) == -1){
-            }
-            return Map();
+        if(isEmpty()){
+            return add(item);
         } else {
-            Tuple2<Map<K, V>, Map<K, V>> tp = splitAt(length() / 2);
-            return tp._1;
+            MapCons<K, V> y =(MapCons<K, V>) this;
+
+            switch(item._1.compareTo(y.head()._1)){
+                case 1: return y.tail().cons(item).add(y.head());
+                case 0:
+                    if(item._2.equals(y.head()._2)){
+                        return this;
+                    } else {
+                        return y.tail().cons(item);
+                    }
+                default: return y.tail().add(y.head()).add(item);
+            }
         }
     }
 
@@ -100,30 +132,19 @@ public abstract class Map<K extends Comparable, V> extends Traversable<Map, Tupl
     }
 
     @Override
-    public <B> Traversable<Map, B> map(Fn1<Tuple2<K, V>, B> f) {
-        if(isEmpty()){
-            return (Traversable<Map, B>) empty();
-        } else {
-            MapCons<K, V> m = (MapCons<K, V>) this;
-            Tuple2<K, B> b = (Tuple2<K, B>) f.apply(head());
-            return (Traversable<Map, B>) new MapCons<>(b, (Map<K, B>) tail().map(f));
-        }
-    }
-
-    @Override
     public <B> Monad<Map, B> flatMap(Fn1<Tuple2<K, V>, Monad<Map, B>> f) {
         return null;
     }
 }
 
-class EmptyMap extends Map<Comparable, Object> {
-    private static EmptyMap emptyMap = null;
+class EmptyMap extends Map<Integer, Object> {
+    private static EmptyMap emptyMp = null;
 
-    public static Map<Comparable, Object> empty(){
-        if(emptyMap == null){
-            emptyMap = new EmptyMap();
+    public static Map<? extends Comparable<?>, Object> emptyMap(){
+        if(emptyMp == null){
+            emptyMp = new EmptyMap();
         }
-        return emptyMap;
+        return emptyMp;
     }
 
     private EmptyMap(){}
@@ -139,37 +160,37 @@ class EmptyMap extends Map<Comparable, Object> {
     }
 
     @Override
-    public Tuple2<Comparable, Object> head() throws NoSuchElementException {
+    public Tuple2<Integer, Object> head() throws NoSuchElementException {
         throw new NoSuchElementException();
     }
 
     @Override
-    public Map<Comparable, Object> tail() throws NoSuchElementException {
+    public Map<Integer, Object> tail() throws NoSuchElementException {
         throw new NoSuchElementException();
     }
 
     @Override
-    public Map<Comparable, Object> init() throws NoSuchElementException {
+    public Map<Integer, Object> init() throws NoSuchElementException {
         throw new NoSuchElementException();
     }
 
     @Override
-    public Tuple2<Comparable, Object> last() throws NoSuchElementException {
+    public Tuple2<Integer, Object> last() throws NoSuchElementException {
         throw new NoSuchElementException();
     }
 
     @Override
-    public Maybe<Tuple2<Comparable, Object>> maybeHead() {
-        return (Maybe<Tuple2<Comparable, Object>>) Nothing();
+    public Maybe<Tuple2<Integer, Object>> maybeHead() {
+        return (Maybe<Tuple2<Integer, Object>>) Nothing();
     }
 
     @Override
-    public Maybe<Tuple2<Comparable, Object>> maybeLast() {
-        return (Maybe<Tuple2<Comparable, Object>>) Nothing();
+    public Maybe<Tuple2<Integer, Object>> maybeLast() {
+        return (Maybe<Tuple2<Integer, Object>>) Nothing();
     }
 }
 
-class MapCons<K extends Comparable, V> extends Map<K, V> {
+class MapCons<K extends Comparable<K>, V> extends Map<K, V> {
 
     private final Tuple2<K, V> head_;
     private final Map<K, V> tail_;

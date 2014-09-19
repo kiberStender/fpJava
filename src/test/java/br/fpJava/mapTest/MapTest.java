@@ -5,7 +5,8 @@ import br.fpJava.fn.Fn1;
 import br.fpJava.tuple.Tuple2;
 import org.junit.Test;
 
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static br.fpJava.collections.map.Map.Map;
 import static br.fpJava.tuple.Tuple2.tuple2;
 
@@ -24,6 +25,21 @@ public class MapTest {
     @Test
     public void testEquality1(){
         assertTrue(!mi.equals(md));
+    }
+
+    @Test
+    public void testCons(){
+        assertEquals(Map(tuple2(1, 2.0), tuple2(2, 3.2)), md.cons(tuple2(2, 3.2)));
+    }
+
+    @Test
+    public void testCons1(){
+        assertEquals(Map(tuple2(1, 2.0), tuple2(2, 3.2), tuple2(3, 1.5)), md.cons(tuple2(3, 1.5)).cons(tuple2(2, 3.2)));
+    }
+
+    @Test
+    public void testCons2(){
+        assertEquals(Map(tuple2(1, 2.0), tuple2(2, 3.2), tuple2(3, 1.5)), md.cons(tuple2(3, 1.7)).cons(tuple2(2, 3.2)).cons(tuple2(3, 1.5)));
     }
 
     @Test
@@ -81,7 +97,7 @@ public class MapTest {
         }).equals(Map(tuple2(1, 4.0))));
     }
 
-    @Test
+    //@Test
     public void testMap1(){
         assertTrue(mi.map(new Fn1<Tuple2<Integer, String>, Tuple2<String, String>>() {
             @Override
