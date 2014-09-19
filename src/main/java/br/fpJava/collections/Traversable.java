@@ -32,6 +32,8 @@ public abstract class Traversable<T, A> extends Monad<T, A>{
 
     public abstract Maybe<A> maybeLast();
 
+    protected abstract <I extends Traversable<T, A>> I empty();
+
     /**
      * Scala :: and Haskell : functions
      * @param item the item to be appended to the collection
@@ -103,5 +105,20 @@ public abstract class Traversable<T, A> extends Monad<T, A>{
         } else {
             return f.apply(head()).apply(tail().foldRight(acc, f));
         }
+    }
+
+    @Override
+    public <B> Traversable<T, B> map(final Fn1<A, B> f) {
+        return foldRight((Traversable<T, B>) empty(), new Fn1<A, Fn1<Traversable<T, B>, Traversable<T, B>>>() {
+            @Override
+            public Fn1<Traversable<T, B>, Traversable<T, B>> apply(final A item) {
+                return new Fn1<Traversable<T, B>, Traversable<T, B>>() {
+                    @Override
+                    public Traversable<T, B> apply(final Traversable<T, B> acc) {
+                        return acc.cons(f.apply(item));
+                    }
+                };
+            }
+        });
     }
 }
