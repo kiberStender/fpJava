@@ -38,8 +38,28 @@ public class MapTest {
     }
 
     @Test
-    public void testCons2(){
+    public void testCons2() {
         assertEquals(Map(tuple2(1, 2.0), tuple2(2, 3.2), tuple2(3, 1.5)), md.cons(tuple2(3, 1.7)).cons(tuple2(2, 3.2)).cons(tuple2(3, 1.5)));
+    }
+
+    @Test
+    public void testTail(){
+        assertEquals(Map(tuple2(2, "eduardo")), mi.tail());
+    }
+
+    @Test
+    public void testInit(){
+        assertEquals(Map(tuple2(2, "eduardo")), mi.init());
+    }
+
+    @Test
+    public void testLast(){
+        assertEquals(tuple2(2, "eduardo"), mi.last());
+    }
+
+    @Test
+    public void testHead(){
+        assertEquals(tuple2(1, 2.0), md.head());
     }
 
     @Test

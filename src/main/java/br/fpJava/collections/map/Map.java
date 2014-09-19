@@ -137,6 +137,7 @@ public abstract class Map<K extends Comparable<K>, V> extends Traversable<Map, T
     }
 }
 
+//FIXME- Change Integer type for a decent generic type
 class EmptyMap extends Map<Integer, Object> {
     private static EmptyMap emptyMp = null;
 
@@ -227,14 +228,20 @@ class MapCons<K extends Comparable<K>, V> extends Map<K, V> {
 
     @Override
     public Map<K, V> init() {
-        //TODO- Implemet
-        return null;
+        if(tail_.isEmpty()){
+            return this;
+        } else {
+            return tail_.init();
+        }
     }
 
     @Override
     public Tuple2<K, V> last() {
-        //TODO- Implement
-        return null;
+        if(tail_.isEmpty()){
+            return head_;
+        } else {
+            return tail_.last();
+        }
     }
 
     @Override
