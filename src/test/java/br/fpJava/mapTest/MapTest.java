@@ -71,7 +71,7 @@ public class MapTest {
         }).equals(-3));
     }
 
-    @Test
+    //@Test
     public void testMap(){
         assertTrue(md.map(new Fn1<Tuple2<Integer, Double>, Tuple2<Integer, Double>>() {
             @Override
@@ -79,6 +79,16 @@ public class MapTest {
                 return tuple2(x._1, x._2 * 2);
             }
         }).equals(Map(tuple2(1, 4.0))));
+    }
+
+    @Test
+    public void testMap1(){
+        assertTrue(mi.map(new Fn1<Tuple2<Integer, String>, Tuple2<String, String>>() {
+            @Override
+            public Tuple2<String, String> apply(Tuple2<Integer, String> x) {
+                return tuple2(x._1 + "k", x._2 + "l");
+            }
+        }).equals(Map(tuple2("1k", "kleberl"), tuple2("2k", "eduardol"))));
     }
 
 }
