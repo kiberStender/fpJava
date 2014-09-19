@@ -2,7 +2,6 @@ package br.fpJava.collections.seq;
 
 import br.fpJava.collections.*;
 import br.fpJava.fn.Fn1;
-import br.fpJava.maybe.Maybe;
 import br.fpJava.tuple.Tuple2;
 import br.fpJava.typeclasses.Monad;
 import static br.fpJava.collections.seq.Nil.Nil;
@@ -16,6 +15,11 @@ import java.util.List;
  */
 
 public abstract class Seq<A> extends Traversable<Seq, A> {
+
+    @Override
+    protected Seq<A> empty() {
+        return (Seq<A>) Nil();
+    }
 
     public Seq<A> cons(A item){
         return new Cons<>(item, this);
@@ -116,21 +120,6 @@ public abstract class Seq<A> extends Traversable<Seq, A> {
     @Override
     public Tuple2<Seq<A>, Seq<A>> splitAt(Integer n) {
         return splitR(n, this, (Seq<A>) Nil());
-    }
-
-    @Override
-    public <B> Seq<B> map(final Fn1<A, B> f) {
-        return foldRight((Seq<B>) Seq(), new Fn1<A, Fn1<Seq<B>, Seq<B>>>() {
-            @Override
-            public Fn1<Seq<B>, Seq<B>> apply(final A item) {
-                return new Fn1<Seq<B>, Seq<B>>() {
-                    @Override
-                    public Seq<B> apply(Seq<B> acc) {
-                        return acc.cons(f.apply(item));
-                    }
-                };
-            }
-        });
     }
 
     @Override
