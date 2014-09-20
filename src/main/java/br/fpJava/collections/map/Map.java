@@ -38,22 +38,17 @@ public abstract class Map<K extends Comparable<K>, V> extends Traversable<Map, T
     }
 
     @Override
-    public String toString() {
-        return "Map(" + foldLeft("", new Fn1<String, Fn1<Tuple2<K, V>, String>>() {
-            @Override
-            public Fn1<Tuple2<K, V>, String> apply(final String acc) {
-                return new Fn1<Tuple2<K, V>, String>() {
-                    @Override
-                    public String apply(final Tuple2<K, V> item) {
-                        if(acc.equals("")){
-                            return "(" + item._1 + " -> " + item._2 + ")";
-                        } else {
-                            return acc + "(" + item._1 + " -> " + item._2 + ")";
-                        }
-                    }
-                };
-            }
-        }) + ")";
+    protected String prefix() {
+        return "Map";
+    }
+
+    @Override
+    protected String toStringFrmt(String acc, Tuple2<K, V> item) {
+        if(acc.equals("")){
+            return "(" + item._1 + " -> " + item._2 + ")";
+        } else {
+            return acc + "(" + item._1 + " -> " + item._2 + ")";
+        }
     }
 
     protected Map<K, V> empty(){

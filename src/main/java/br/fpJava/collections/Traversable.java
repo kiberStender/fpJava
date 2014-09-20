@@ -48,6 +48,24 @@ public abstract class Traversable<T, A> extends Monad<T, A>{
      */
     public abstract Traversable<T, A> concat(final Traversable<T, A> prefix);
 
+    public final String toString(){
+        return prefix() + "(" + foldLeft("", new Fn1<String, Fn1<A, String>>() {
+            @Override
+            public Fn1<A, String> apply(final String acc) {
+                return new Fn1<A, String>() {
+                    @Override
+                    public String apply(A item) {
+                        return toStringFrmt(acc, item);
+                    }
+                };
+            }
+        }) + ")";
+    }
+
+    protected abstract String prefix();
+
+    protected abstract String toStringFrmt(final String acc, final A item);
+
     public Integer length(){
         return foldLeft(0, new Fn1<Integer, Fn1<A, Integer>>() {
             @Override

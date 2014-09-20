@@ -53,22 +53,18 @@ public abstract class Seq<A> extends Traversable<Seq, A> {
         }
     }
 
-    public String toString(){
-        return "Seq(" + foldLeft("", new Fn1<String, Fn1<A, String>>() {
-            @Override
-            public Fn1<A, String> apply(final String acc) {
-                return new Fn1<A, String>() {
-                    @Override
-                    public String apply(A item) {
-                        if(acc.equals("")){
-                            return "" + item;
-                        } else {
-                            return acc + ", " + item;
-                        }
-                    }
-                };
-            }
-        }) + ")";
+    @Override
+    protected String prefix() {
+        return "Seq";
+    }
+
+    @Override
+    protected String toStringFrmt(final String acc, final A item) {
+        if(acc.equals("")){
+            return "" + item;
+        } else {
+            return acc + ", " + item;
+        }
     }
 
     public Seq<A> reverse(){
