@@ -121,4 +121,13 @@ public abstract class Traversable<T, A> extends Monad<T, A>{
             }
         });
     }
+
+    @Override
+    public <B> Traversable<T, B> flatMap(Fn1<A, Monad<T, B>> f) {
+        if(isEmpty()){
+            return (Traversable<T, B>) empty();
+        } else {
+            return tail().flatMap(f).concat((Traversable<T, B>) f.apply(head()));
+        }
+    }
 }
