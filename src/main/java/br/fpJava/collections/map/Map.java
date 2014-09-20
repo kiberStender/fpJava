@@ -5,7 +5,6 @@ import br.fpJava.fn.Fn1;
 import br.fpJava.maybe.Just;
 import br.fpJava.maybe.Maybe;
 import br.fpJava.tuple.Tuple2;
-import br.fpJava.typeclasses.Monad;
 
 import java.util.NoSuchElementException;
 
@@ -79,9 +78,23 @@ public abstract class Map<K extends Comparable<K>, V> extends Traversable<Map, T
         }
     }
 
+    private Fn1<Map<K, V>, Map<K, V>> helper(final Map<K, V> acc){
+        return new Fn1<Map<K, V>, Map<K, V>>() {
+            @Override
+            public Map<K, V> apply(final Map<K, V> other) {
+                if(other.isEmpty()){
+                    return acc;
+                } else {
+                    MapCons<K, V> c = (MapCons<K, V>) other;
+                    return helper(acc.cons(c.head())).apply(c.tail());
+                }
+            }
+        };
+    }
+
     @Override
-    public Traversable<Map, Tuple2<K, V>> concat(Traversable<Map, Tuple2<K, V>> t) {
-        return null;
+    public Traversable<Map, Tuple2<K, V>> concat(Traversable<Map, Tuple2<K, V>> prefix) {
+        return helper(this).apply((Map<K, V>) prefix);
     }
 
     public final Maybe<V> get(final K key){

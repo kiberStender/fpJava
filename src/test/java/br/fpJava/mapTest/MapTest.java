@@ -2,7 +2,9 @@ package br.fpJava.mapTest;
 
 import br.fpJava.collections.map.Map;
 import br.fpJava.fn.Fn1;
+import br.fpJava.maybe.Just;
 import br.fpJava.tuple.Tuple2;
+import br.fpJava.typeclasses.Monad;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -48,6 +50,11 @@ public class MapTest {
     }
 
     @Test
+    public void testHead(){
+        assertEquals(tuple2(1, 2.0), md.head());
+    }
+
+    @Test
     public void testInit(){
         assertEquals(Map(tuple2(2, "eduardo")), mi.init());
     }
@@ -58,23 +65,18 @@ public class MapTest {
     }
 
     @Test
-    public void testHead(){
-        assertEquals(tuple2(1, 2.0), md.head());
-    }
-
-    @Test
     public void testFind() throws Exception{
-        assertTrue(mi.find(new Fn1<Tuple2<Integer, String>, Boolean>() {
+        assertEquals(new Just<>(tuple2(2, "eduardo")), mi.find(new Fn1<Tuple2<Integer, String>, Boolean>() {
             @Override
             public Boolean apply(Tuple2<Integer, String> x) {
                 return x._1.equals(2);
             }
-        }).get().equals(tuple2(2, "eduardo")));
+        }));
     }
 
     @Test
     public void testGet() throws Exception{
-        assertTrue(mi.get(2).get().equals("eduardo"));
+        assertEquals(new Just<>("eduardo"), mi.get(2));
     }
 
     @Test
@@ -127,4 +129,13 @@ public class MapTest {
         }));
     }
 
+    @Test
+    public void testFlatMap(){
+        assertEquals(Map(tuple2(1, 4.2)), md.flatMap(new Fn1<Tuple2<Integer, Double>, Monad<Map, Tuple2<Integer, Double>>>() {
+            @Override
+            public Monad<Map, Tuple2<Integer, Double>> apply(final Tuple2<Integer, Double> x) {
+                return Map(tuple2(x._1, x._2 + 2.2));
+            }
+        }));
+    }
 }
