@@ -1,16 +1,12 @@
 package br.fpJava.collections.map;
 
 import br.fpJava.collections.Traversable;
-import br.fpJava.fn.Fn;
 import br.fpJava.fn.Fn1;
 import br.fpJava.maybe.Just;
 import br.fpJava.maybe.Maybe;
-import br.fpJava.maybe.Nothing;
 import br.fpJava.tuple.Tuple2;
-import br.fpJava.typeclasses.Functor;
 import br.fpJava.typeclasses.Monad;
 
-import java.util.Comparator;
 import java.util.NoSuchElementException;
 
 import static br.fpJava.maybe.Nothing.Nothing;
@@ -128,11 +124,6 @@ public abstract class Map<K extends Comparable<K>, V> extends Traversable<Map, T
 
     @Override
     public Tuple2<Map<K, V>, Map<K, V>> splitAt(Integer n) {
-        return null;
-    }
-
-    @Override
-    public <B> Monad<Map, B> flatMap(Fn1<Tuple2<K, V>, Monad<Map, B>> f) {
         return null;
     }
 }

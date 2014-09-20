@@ -3,11 +3,14 @@ package br.fpJava.seqTest;
 import br.fpJava.collections.seq.Seq;
 import br.fpJava.collections.seq.Cons;
 import br.fpJava.fn.Fn1;
+import br.fpJava.maybe.Just;
 import br.fpJava.maybe.Maybe;
 import br.fpJava.typeclasses.Monad;
 import org.junit.Test;
 
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static br.fpJava.collections.seq.Seq.Seq;
 import static br.fpJava.collections.seq.Nil.Nil;
 import static br.fpJava.tuple.Tuple2.tuple2;
@@ -28,22 +31,22 @@ public class SeqTest {
 
     @Test
     public void tesEquality(){
-        assertTrue(seqi.equals(seqi));
+        assertEquals(seqi, seqi);
     }
 
     @Test
     public void testEquality1(){
-        assertTrue(s.equals(s));
+        assertEquals(s, s);
     }
 
     @Test
     public void testEquality2(){
-        assertTrue(seqi.equals(s));
+        assertEquals(s, seqi);
     }
 
     @Test
     public void testEquality3(){
-        assertTrue(s.equals(seqi));
+        assertEquals(seqi, s);
     }
 
     @Test
@@ -53,22 +56,22 @@ public class SeqTest {
 
     @Test
     public void testEquality5(){
-        assertTrue(!s.equals(seqs));
+        assertNotEquals(seqs, s);
     }
 
     @Test
     public void testToString(){
-        assertTrue(seqi.toString().equals("Seq(1, 2, 3)"));
+        assertEquals("Seq(1, 2, 3)", seqi.toString());
     }
 
     @Test
     public void testToString1(){
-        assertTrue(s.toString().equals("Seq(1, 2, 3)"));
+        assertEquals("Seq(1, 2, 3)", s.toString());
     }
 
     @Test
     public void testToString2(){
-        assertTrue(seqs.toString().equals("Seq(Joao, Luiz)"));
+        assertEquals("Seq(Joao, Luiz)", seqs.toString());
     }
 
     @Test
@@ -88,17 +91,17 @@ public class SeqTest {
 
     @Test
     public void testCons(){
-        assertTrue(seqi.cons(0).equals(Seq(0, 1, 2, 3)));
+        assertEquals(Seq(0, 1, 2, 3), seqi.cons(0));
     }
 
     @Test
     public void testConcat(){
-        assertTrue(seqi.concat(s).equals(Seq(1, 2, 3, 1, 2, 3)));
+        assertEquals(Seq(1, 2, 3, 1, 2, 3), seqi.concat(s));
     }
 
     @Test
     public void testReverse(){
-        assertTrue(seqi.reverse().equals(Seq(3, 2, 1)));
+        assertEquals(Seq(3, 2, 1), seqi.reverse());
     }
 
     @Test
@@ -133,7 +136,7 @@ public class SeqTest {
 
     @Test
     public void testInit(){
-        assertTrue(seqi.init().equals(Seq(1, 2)));
+        assertEquals(Seq(1, 2), seqi.init());
     }
 
     @Test
@@ -148,17 +151,17 @@ public class SeqTest {
 
     @Test
     public void testFilter(){
-        assertTrue(seqi.filter(filter).equals(Seq(2)));
+        assertEquals(Seq(2), seqi.filter(filter));
     }
 
     @Test
     public void testFilterNot(){
-        assertTrue(seqi.filterNot(filter).equals(Seq(1, 3)));
+        assertEquals(Seq(1, 3), seqi.filterNot(filter));
     }
 
     @Test
     public void testPartition(){
-        assertTrue(seqi.partition(filter).equals(tuple2(Seq(2), Seq(1, 3))));
+        assertEquals(tuple2(Seq(2), Seq(1, 3)), seqi.partition(filter));
     }
 
     @Test
@@ -173,24 +176,25 @@ public class SeqTest {
 
     @Test
     public void testMap(){
-        assertTrue(seqi.map(new Fn1<Integer, Integer>() {
+        assertEquals(Seq(2, 4, 6), seqi.map(new Fn1<Integer, Integer>() {
             @Override
             public Integer apply(Integer x) {
                 return x * 2;
             }
-        }).equals(Seq(2, 4, 6)));
+        }));
     }
 
     @Test
     public void testFlatMap(){
-        assertTrue(seqi.flatMap(new Fn1<Integer, Monad<Seq, Integer>>() {
+        assertEquals(Seq(2, 3, 4), seqi.flatMap(new Fn1<Integer, Monad<Seq, Integer>>() {
             @Override
             public Monad<Seq, Integer> apply(Integer x) {
                 return Seq(1 + x);
             }
-        }).equals(Seq(2, 3, 4)));
+        }));
     }
 
+    @Test
     public void testFindWithMonad() throws Exception{
         final Seq<Integer> nums = Seq(1, 2, 3, 4, 5);
         final Fn1<Integer, Fn1<Integer, Boolean>> find = new Fn1<Integer, Fn1<Integer, Boolean>>() {
@@ -230,11 +234,11 @@ public class SeqTest {
             }
         });
 
-        assertTrue(res.get().equals(8));
+        assertEquals(new Just<Integer>(8), res);
     }
 
     @Test
     public void testSplit(){
-        assertTrue(seqi.splitAt(2).equals(tuple2(Seq(1, 2), Seq(3))));
+        assertEquals(tuple2(Seq(1, 2), Seq(3)), seqi.splitAt(2));
     }
 }

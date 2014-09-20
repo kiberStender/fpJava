@@ -121,14 +121,4 @@ public abstract class Seq<A> extends Traversable<Seq, A> {
     public Tuple2<Seq<A>, Seq<A>> splitAt(Integer n) {
         return splitR(n, this, (Seq<A>) Nil());
     }
-
-    @Override
-    public <B> Seq<B> flatMap(final Fn1<A, Monad<Seq, B>> f) {
-        if(this instanceof Nil){
-            return (Seq<B>) Nil();
-        } else {
-            Cons<A> c = (Cons<A>) this;
-            return c.tail().flatMap(f).concat((Seq<B>) f.apply(c.head()));
-        }
-    }
 }
