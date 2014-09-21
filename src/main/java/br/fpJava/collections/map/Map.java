@@ -10,6 +10,7 @@ import java.util.NoSuchElementException;
 
 import static br.fpJava.maybe.Nothing.Nothing;
 import static br.fpJava.collections.map.EmptyMap.emptyMap;
+import static br.fpJava.tuple.Tuple2.tuple2;
 
 
 /**
@@ -130,9 +131,22 @@ public abstract class Map<K extends Comparable<K>, V> extends Traversable<Map, T
         });
     }
 
+    private final Tuple2<Map<K, V>, Map<K, V>> splitR(Integer curN, Map<K, V> curL, Map<K, V> pre){
+        if(curL.isEmpty()){
+            return tuple2(pre, empty());
+        } else {
+            if(curN.equals(0)){
+                return tuple2(pre, curL);
+            } else {
+                MapCons<K, V> c = (MapCons<K, V>) curL;
+                return splitR(curN - 1, c.tail(), pre.cons(c.head()));
+            }
+        }
+    }
+
     @Override
     public Tuple2<Map<K, V>, Map<K, V>> splitAt(Integer n) {
-        return null;
+        return splitR(n, this, empty());
     }
 }
 
