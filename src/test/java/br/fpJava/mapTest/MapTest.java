@@ -158,4 +158,21 @@ public class MapTest {
             }
         }));
     }
+
+    @Test
+    public void testSplitAt(){
+        assertEquals(tuple2(Map(tuple2(1, "kleber")), Map(tuple2(2, "eduardo"))), mi.splitAt(1));
+    }
+
+    @Test
+    public void testSplitAt1(){
+        final Tuple2<Map<Integer, String>, Map<Integer, String>> v = tuple2(Map(tuple2(1, "kleber")), Map(tuple2(2, "eduardo"), tuple2(3, "scalise")));
+        assertEquals(v, mi.cons(tuple2(3, "scalise")).splitAt(1));
+    }
+
+    @Test
+    public void testSplitAt2(){
+        final Tuple2<Map<Integer, String>, Map<Integer, String>> v = tuple2(Map(tuple2(1, "kleber"), tuple2(2, "eduardo")), Map(tuple2(3, "scalise")));
+        assertEquals(v, mi.cons(tuple2(3, "scalise")).splitAt(2));
+    }
 }
