@@ -20,6 +20,11 @@ public class MapTest {
     private final Map<Integer, Double> md = Map(tuple2(1, 2.0));
 
     @Test
+    public void testConstructor(){
+        assertEquals(tuple2(1, "Kleber"), Map(tuple2(2, "eduardo"), tuple2(1, "Kleber")).head());
+    }
+
+    @Test
     public void testEquality(){
         assertTrue(mi.equals(mi));
     }
