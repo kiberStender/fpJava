@@ -33,7 +33,7 @@ public abstract class Map<K extends Comparable<K>, V> extends Traversable<Map, T
         if(tp.length == 0){
             return (Map<K, V>) emptyMap();
         } else {
-            return new MapCons<K, V>(tp[0], Map(getTail(tp)));
+            return Map(getTail(tp)).cons(tp[0]);
         }
     }
 
