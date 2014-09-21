@@ -101,11 +101,11 @@ public abstract class Seq<A> extends Traversable<Seq, A> {
     }
 
     private final Tuple2<Seq<A>, Seq<A>> splitR(Integer curN, Seq<A> curL, Seq<A> pre){
-        if(curL instanceof Nil){
-            return tuple2(pre.reverse(), (Seq<A>) Nil());
+        if(curL.isEmpty()){
+            return tuple2(pre.reverse(), empty());
         } else {
             if(curN.equals(0)){
-                return tuple2(pre.reverse(), (Seq<A>) curL);
+                return tuple2(pre.reverse(), curL);
             } else {
                 Cons<A> c = (Cons<A>) curL;
                 return splitR(curN - 1, c.tail(), pre.cons(c.head()));
@@ -115,6 +115,6 @@ public abstract class Seq<A> extends Traversable<Seq, A> {
 
     @Override
     public Tuple2<Seq<A>, Seq<A>> splitAt(Integer n) {
-        return splitR(n, this, (Seq<A>) Nil());
+        return splitR(n, this, empty());
     }
 }
