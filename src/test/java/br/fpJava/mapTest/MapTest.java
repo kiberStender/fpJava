@@ -45,6 +45,16 @@ public class MapTest {
     }
 
     @Test
+    public void testConcat(){
+        assertEquals(Map(tuple2(1, 2.0), tuple2(2, 3.1)), md.concat(Map(tuple2(2, 3.1))));
+    }
+
+    @Test
+    public void testConcat1(){
+        assertEquals(Map(tuple2(1, 2.0), tuple2(2, 3.1), tuple2(3, 2.5)), md.concat(Map(tuple2(3, 2.5), tuple2(2, 3.1))));
+    }
+
+    @Test
     public void testTail(){
         assertEquals(Map(tuple2(2, "eduardo")), mi.tail());
     }
@@ -135,6 +145,16 @@ public class MapTest {
             @Override
             public Monad<Map, Tuple2<Integer, Double>> apply(final Tuple2<Integer, Double> x) {
                 return Map(tuple2(x._1, x._2 + 2.2));
+            }
+        }));
+    }
+
+    @Test
+    public void testFlatMap1(){
+        assertEquals(Map(tuple2("1k", 2.0)), md.flatMap(new Fn1<Tuple2<Integer, Double>, Monad<Map, Tuple2<String, Double>>>() {
+            @Override
+            public Monad<Map, Tuple2<String, Double>> apply(final Tuple2<Integer, Double> x) {
+                return Map(tuple2(x._1 + "k", x._2));
             }
         }));
     }
