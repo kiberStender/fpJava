@@ -60,18 +60,18 @@ public class MapTest {
     }
 
     @Test
-    public void testTail(){
-        assertEquals(Map(tuple2(2, "eduardo")), mi.tail());
-    }
-
-    @Test
     public void testHead(){
         assertEquals(tuple2(1, 2.0), md.head());
     }
 
     @Test
+    public void testTail(){
+        assertEquals(Map(tuple2(2, "eduardo")), mi.tail());
+    }
+
+    @Test
     public void testInit(){
-        assertEquals(Map(tuple2(2, "eduardo")), mi.init());
+        assertEquals(Map(tuple2(1, "kleber")), mi.init());
     }
 
     @Test
