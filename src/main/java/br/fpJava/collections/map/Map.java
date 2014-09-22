@@ -242,9 +242,9 @@ class MapCons<K extends Comparable<K>, V> extends Map<K, V> {
     @Override
     public Map<K, V> init() {
         if(tail_.isEmpty()){
-            return this;
+            return empty();
         } else {
-            return tail_.init();
+            return (Map<K, V>) tail_.init().cons(head_);
         }
     }
 
