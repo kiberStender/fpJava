@@ -39,4 +39,19 @@ public class Success<A> extends Try<A> {
     public A getOrElse(Fn<Object> f) {
         return value;
     }
+
+    @Override
+    public String toString() {
+        return "Success(" + value + ")";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Success){
+            Success<A> s = (Success<A>) obj;
+            return value.equals(s.value);
+        } else {
+            return false;
+        }
+    }
 }

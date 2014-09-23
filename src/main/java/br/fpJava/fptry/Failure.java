@@ -8,7 +8,7 @@ import br.fpJava.typeclasses.Monad;
  * Created by sirkleber on 23/09/14.
  */
 public class Failure<A> extends Try<A> {
-    final A value;
+    public final A value;
 
     public Failure(A value) {
         this.value = value;
@@ -27,5 +27,20 @@ public class Failure<A> extends Try<A> {
     @Override
     public Object getOrElse(Fn<Object> f) {
         return f.apply();
+    }
+
+    @Override
+    public String toString() {
+        return "Failure(" + value + ")";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Failure){
+            Failure<A> f = (Failure<A>) obj;
+            return value.equals(f.value);
+        } else {
+            return false;
+        }
     }
 }
