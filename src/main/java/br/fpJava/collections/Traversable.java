@@ -80,7 +80,23 @@ public abstract class Traversable<T, A> extends Monad<T, A>{
         });
     }
 
-    public abstract Traversable<T, A> filter(final Fn1<A, Boolean> p);
+    public Traversable<T, A> filter(final Fn1<A, Boolean> p){
+        return foldRight((Traversable<T, A>) empty(), new Fn1<A, Fn1<Traversable<T, A>, Traversable<T, A>>>() {
+            @Override
+            public Fn1<Traversable<T, A>, Traversable<T, A>> apply(final A item) {
+                return new Fn1<Traversable<T, A>, Traversable<T, A>>() {
+                    @Override
+                    public Traversable<T, A> apply(final Traversable<T, A> acc) {
+                        if(p.apply(item)){
+                            return acc.cons(item);
+                        } else {
+                            return acc;
+                        }
+                    }
+                };
+            }
+        });
+    }
 
     public Traversable<T, A> filterNot(final Fn1<A, Boolean> p){
         return filter(new Fn1<A, Boolean>() {

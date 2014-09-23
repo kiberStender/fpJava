@@ -112,25 +112,6 @@ public abstract class Map<K extends Comparable<K>, V> extends Traversable<Map, T
         });
     }
 
-    @Override
-    public Map<K, V> filter(final Fn1<Tuple2<K, V>, Boolean> p) {
-        return foldRight((Map<K, V>) Map(), new Fn1<Tuple2<K, V>, Fn1<Map<K, V>, Map<K, V>>>() {
-            @Override
-            public Fn1<Map<K, V>, Map<K, V>> apply(final Tuple2<K, V> item) {
-                return new Fn1<Map<K, V>, Map<K, V>>() {
-                    @Override
-                    public Map<K, V> apply(Map<K, V> acc) {
-                        if(p.apply(item)){
-                            return new MapCons<K, V>(item, acc);
-                        } else {
-                            return acc;
-                        }
-                    }
-                };
-            }
-        });
-    }
-
     private final Tuple2<Map<K, V>, Map<K, V>> splitR(Integer curN, Map<K, V> curL, Map<K, V> pre){
         if(curL.isEmpty()){
             return tuple2(pre, empty());

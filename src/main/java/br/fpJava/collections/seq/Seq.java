@@ -81,25 +81,6 @@ public abstract class Seq<A> extends Traversable<Seq, A> {
         });
     }
 
-    @Override
-    public Seq<A> filter(final Fn1<A, Boolean> p) {
-        return foldRight((Seq<A>) Seq(), new Fn1<A, Fn1<Seq<A>, Seq<A>>>(){
-            @Override
-            public Fn1<Seq<A>, Seq<A>> apply(final A item) {
-                return new Fn1<Seq<A>, Seq<A>>() {
-                    @Override
-                    public Seq<A> apply(final Seq<A> acc) {
-                        if(p.apply(item)){
-                            return acc.cons(item);
-                        } else {
-                            return acc;
-                        }
-                    }
-                };
-            }
-        });
-    }
-
     private final Tuple2<Seq<A>, Seq<A>> splitR(Integer curN, Seq<A> curL, Seq<A> pre){
         if(curL.isEmpty()){
             return tuple2(pre.reverse(), empty());
