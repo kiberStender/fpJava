@@ -19,4 +19,19 @@ public class Left<L> extends Either<Object, L> {
     public Boolean isRight() {
         return false;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Left){
+            Left<L> l = (Left<L>) this;
+            return value.equals(l.value);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Left("+ value +")";
+    }
 }
