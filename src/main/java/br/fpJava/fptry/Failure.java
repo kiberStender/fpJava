@@ -7,7 +7,7 @@ import br.fpJava.typeclasses.Monad;
 /**
  * Created by sirkleber on 23/09/14.
  */
-public class Failure<A> extends Try<A> {
+public class Failure<A extends Exception> extends Try<A> {
     public final A value;
 
     public Failure(A value) {
