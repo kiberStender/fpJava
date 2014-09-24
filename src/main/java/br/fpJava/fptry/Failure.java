@@ -43,4 +43,14 @@ public class Failure<A> extends Try<A> {
             return false;
         }
     }
+
+    @Override
+    public Boolean isFailure() {
+        return true;
+    }
+
+    @Override
+    public Boolean isSuccess() {
+        return false;
+    }
 }

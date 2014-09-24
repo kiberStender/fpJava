@@ -18,4 +18,8 @@ public abstract class Try<A> extends Monad<Try, A> {
     }
 
     public abstract Object getOrElse(Fn<Object> f);
+
+    public abstract Boolean isSuccess();
+
+    public abstract Boolean isFailure();
 }
