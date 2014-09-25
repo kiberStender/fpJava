@@ -23,7 +23,7 @@ br.fpJava <br/>
     Fn1 -> Done <br/>
   fptry <br/>
     Failure -> Done <br/>
-    Success -> <br/>
+    Success -> Done <br/>
     Try -> Done <br/>
   maybe <br/>
     Just -> Done <br/>
