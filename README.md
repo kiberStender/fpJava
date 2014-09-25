@@ -12,11 +12,19 @@ br.fpJava <br/>
       Cons -> Done <br/>
       Nil -> Done <br/>
       Seq -> Done <br/>
-    Set <br/>
+    set <br/>
       Set -> 0% <br/>
+  either <br/>
+    Either -> Done <br/>
+    Left -> Done <br/>
+    Right -> Done <br/>
   fn <br/>
     Fn -> Done <br/>
     Fn1 -> Done <br/>
+  fptry <br/>
+    Failure -> Done <br/>
+    Success -> Done <br/>
+    Try -> Done <br/>
   maybe <br/>
     Just -> Done <br/>
     Maybe -> Done <br/>
