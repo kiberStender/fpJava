@@ -37,4 +37,8 @@ public class State<S, A> extends Monad<State, A> {
             }
         });
     }
+
+    public A evaluate (S s){
+        return run.apply(s)._2;
+    }
 }
