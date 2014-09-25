@@ -3,8 +3,10 @@ package br.fpJava.state;
 import br.fpJava.fn.Fn1;
 import br.fpJava.tuple.Tuple2;
 import br.fpJava.typeclasses.Monad;
+import br.fpJava.utils.Unit;
 
 import static br.fpJava.tuple.Tuple2.tuple2;
+import static br.fpJava.utils.Unit.unit;
 
 /**
  * Created by sirkleber on 25/09/14.
@@ -40,5 +42,32 @@ public class State<S, A> extends Monad<State, A> {
 
     public A evaluate (S s){
         return run.apply(s)._2;
+    }
+
+    public static final <S, A> State<S, A> insert(final A a){
+        return new State<S, A>(new Fn1<S, Tuple2<S, A>>() {
+            @Override
+            public Tuple2<S, A> apply(S s) {
+                return tuple2(s, a);
+            }
+        });
+    }
+
+    public static final <S, A> State<S, A> get(final Fn1<S, A> f) {
+        return new State<S, A>(new Fn1<S, Tuple2<S, A>>() {
+            @Override
+            public Tuple2<S, A> apply(S s) {
+                return tuple2(s, f.apply(s));
+            }
+        });
+    }
+
+    public static final <S> State<S, Unit> mod(final Fn1<S, S> f){
+        return new State<S, Unit>(new Fn1<S, Tuple2<S, Unit>>() {
+            @Override
+            public Tuple2<S, Unit> apply(S s) {
+                return tuple2(f.apply(s), unit());
+            }
+        });
     }
 }
