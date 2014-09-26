@@ -29,6 +29,8 @@ br.fpJava <br/>
     Just -> Done <br/>
     Maybe -> Done <br/>
     Nothing -> Done <br/>
+  state <br/>
+    State -> Done <br/>
   tuple <br/>
     Tuple2 -> Done <br/>
     Tuple3 -> 0% <br/>
