@@ -5,12 +5,8 @@ import br.fpJava.fn.Fn;
 import br.fpJava.fn.Fn1;
 import br.fpJava.maybe.Maybe;
 import br.fpJava.state.State;
-import br.fpJava.tuple.Tuple2;
-import br.fpJava.typeclasses.Monad;
 import br.fpJava.utils.Unit;
 import org.junit.Test;
-
-import java.math.BigInteger;
 
 import static org.junit.Assert.assertEquals;
 import static br.fpJava.collections.map.Map.Map;
