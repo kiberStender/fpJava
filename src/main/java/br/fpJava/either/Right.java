@@ -3,11 +3,15 @@ package br.fpJava.either;
 /**
  * Created by sirkleber on 24/09/14.
  */
-public class Right<R> extends Either<R, Object> {
+public class Right<R> extends Either<Object, R> {
     public final R value;
 
-    public Right(R value) {
+    private Right(R value) {
         this.value = value;
+    }
+
+    public static final <R> Either<?, R> Right(final R value){
+        return new Right<R>(value);
     }
 
     @Override

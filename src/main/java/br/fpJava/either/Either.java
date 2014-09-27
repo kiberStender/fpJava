@@ -6,7 +6,7 @@ import br.fpJava.typeclasses.Monad;
 /**
  * Created by sirkleber on 24/09/14.
  */
-public abstract class Either<R, L>{
+public abstract class Either<L, R>{
     public abstract Boolean isLeft();
     public abstract Boolean isRight();
 

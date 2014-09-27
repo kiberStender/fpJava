@@ -3,11 +3,15 @@ package br.fpJava.either;
 /**
  * Created by sirkleber on 24/09/14.
  */
-public class Left<L> extends Either<Object, L> {
+public class Left<L> extends Either<L, Object> {
     public final L value;
 
-    public Left(L value) {
+    private Left(L value) {
         this.value = value;
+    }
+
+    public static final <L> Either<L, ?> Left(final L value){
+        return new Left<L>(value);
     }
 
     @Override
