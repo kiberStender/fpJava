@@ -1,8 +1,6 @@
 package br.fpJava.eitherTest;
 
 import br.fpJava.either.Either;
-import br.fpJava.either.Left;
-import br.fpJava.either.Right;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
