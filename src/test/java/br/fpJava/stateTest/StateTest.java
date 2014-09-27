@@ -22,6 +22,9 @@ import static br.fpJava.tuple.Tuple2.tuple2;
 public class StateTest {
     private final Map<Integer, Integer> m = Map();
 
+    //http://tonymorris.github.io/blog/posts/memoisation-with-state-using-scala/
+    //fibMemo4 was used as a reference to this function
+
     private State<Map<Integer, Integer>, Integer> fibMemoR(final Integer z){
         if(z <= 1){
             return State.insert(z);
