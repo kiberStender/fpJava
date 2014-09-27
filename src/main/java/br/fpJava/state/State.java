@@ -2,7 +2,7 @@ package br.fpJava.state;
 
 import br.fpJava.fn.Fn1;
 import br.fpJava.tuple.Tuple2;
-import br.fpJava.typeclasses.Monad;
+//import br.fpJava.typeclasses.Monad;
 import br.fpJava.utils.Unit;
 
 import static br.fpJava.tuple.Tuple2.tuple2;
@@ -11,15 +11,15 @@ import static br.fpJava.utils.Unit.unit;
 /**
  * Created by sirkleber on 25/09/14.
  */
-public class State<S, A> extends Monad<State, A> {
+public class State<S, A> {
     public final Fn1<S, Tuple2<S, A>> run;
 
     public State(Fn1<S, Tuple2<S, A>> run) {
         this.run = run;
     }
 
-    @Override
-    public <B> Monad<State, B> map(final Fn1<A, B> f) {
+    //@Override
+    public <B> State<S, B> map(final Fn1<A, B> f) {
         return new State<S, B>(new Fn1<S, Tuple2<S, B>>() {
             @Override
             public Tuple2<S, B> apply(S s) {
@@ -29,8 +29,8 @@ public class State<S, A> extends Monad<State, A> {
         });
     }
 
-    @Override
-    public <B> Monad<State, B> flatMap(final Fn1<A, Monad<State, B>> f) {
+    //@Override
+    public <B> State<S, B> flatMap(final Fn1<A, State<S, B>> f) {
         return new State<S, B>(new Fn1<S, Tuple2<S, B>>() {
             @Override
             public Tuple2<S, B> apply(S s) {
