@@ -18,8 +18,7 @@ public abstract class Maybe<A> extends Monad<Maybe, A>{
         if(this instanceof Nothing){
             return (Maybe<B>) Nothing();
         } else {
-            Just<A> j = (Just<A>) this;
-            return new Just<>(f.apply(j.a));
+            return new Just<>(f.apply(get()));
         }
     }
 
@@ -27,8 +26,7 @@ public abstract class Maybe<A> extends Monad<Maybe, A>{
         if(this instanceof Nothing){
             return (Maybe<B>) Nothing();
         } else {
-            Just<A> j = (Just<A>) this;
-            return (Just<B>) f.apply(j.a);
+            return (Just<B>) f.apply(get());
         }
     }
 
