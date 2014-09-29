@@ -29,7 +29,7 @@ public abstract class Seq<A> extends Traversable<Seq, A> {
         return new Fn1<Seq<A>, Seq<A>>() {
             @Override
             public Seq<A> apply(final Seq<A> other) {
-                if(other instanceof Nil){
+                if(other.isEmpty()){
                     return acc;
                 } else {
                     Cons<A> c = (Cons<A>) other;
