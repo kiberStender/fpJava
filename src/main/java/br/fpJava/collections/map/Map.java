@@ -131,11 +131,10 @@ public abstract class Map<K extends Comparable<K>, V> extends Traversable<Map, T
     }
 }
 
-//FIXME- Change Integer type for a decent generic type
-class EmptyMap extends Map<Integer, Object> {
+class EmptyMap extends Map{
     private static EmptyMap emptyMp = null;
 
-    public static Map<? extends Comparable<?>, Object> emptyMap(){
+    public static Map<? extends Comparable<?>, ?> emptyMap(){
         if(emptyMp == null){
             emptyMp = new EmptyMap();
         }
@@ -155,33 +154,33 @@ class EmptyMap extends Map<Integer, Object> {
     }
 
     @Override
-    public Tuple2<Integer, Object> head() throws NoSuchElementException {
+    public Tuple2<?, ?> head() throws NoSuchElementException {
         throw new NoSuchElementException();
     }
 
     @Override
-    public Map<Integer, Object> tail() throws NoSuchElementException {
+    public Map<?, ?> tail() throws NoSuchElementException {
         throw new NoSuchElementException();
     }
 
     @Override
-    public Map<Integer, Object> init() throws NoSuchElementException {
+    public Map<?, ?> init() throws NoSuchElementException {
         throw new NoSuchElementException();
     }
 
     @Override
-    public Tuple2<Integer, Object> last() throws NoSuchElementException {
+    public Tuple2<?, ?> last() throws NoSuchElementException {
         throw new NoSuchElementException();
     }
 
     @Override
-    public Maybe<Tuple2<Integer, Object>> maybeHead() {
-        return (Maybe<Tuple2<Integer, Object>>) Nothing();
+    public Maybe<Tuple2<?, ?>> maybeHead() {
+        return (Maybe<Tuple2<?, ?>>) Nothing();
     }
 
     @Override
-    public Maybe<Tuple2<Integer, Object>> maybeLast() {
-        return (Maybe<Tuple2<Integer, Object>>) Nothing();
+    public Maybe<Tuple2<?, ?>> maybeLast() {
+        return (Maybe<Tuple2<?, ?>>) Nothing();
     }
 }
 
