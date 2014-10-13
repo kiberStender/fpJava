@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import static br.fpJava.collections.set.EmptySet.EmptySet;
+import static br.fpJava.tuple.Tuple2.tuple2;
 
 /**
  * Created by sirkleber on 10/10/14.
@@ -48,16 +49,18 @@ public abstract class Set<A extends Comparable<A>> extends Traversable<Set, A> {
             return add(item);
         } else {
             ValSet<A> s = (ValSet<A>) this;
+            int compared = s.head().compareTo(item);
 
-            switch(item.compareTo(head())){
-                case 1: return s.tail().cons(item).add(s.head());
-                case 0:
-                    if(item.equals(s.head())){
-                        return this;
-                    } else {
-                        return s.tail().cons(item);
-                    }
-                default: return s.tail().add(s.head()).add(item);
+            if(compared < 0){
+                return s.tail().cons(item).add(s.head());
+            } else if(compared == 0){
+                if(item.equals(s.head())){
+                    return this;
+                } else {
+                    return s.tail().cons(item);
+                }
+            } else {
+                return s.tail().add(s.head()).add(item);
             }
         }
     }
@@ -95,9 +98,41 @@ public abstract class Set<A extends Comparable<A>> extends Traversable<Set, A> {
         }
     }
 
+    private final Tuple2<Set<A>, Set<A>> splitR(Integer curN, Set<A> curL, Set<A> pre){
+        if(curL.isEmpty()){
+            return tuple2(pre, empty());
+        } else {
+            if(curN.equals(0)){
+                return tuple2(pre, curL);
+            } else {
+                ValSet<A> c = (ValSet<A>) curL;
+                return splitR(curN - 1, c.tail(), pre.cons(c.head()));
+            }
+        }
+    }
+
     @Override
     public Tuple2<Set<A>, Set<A>> splitAt(Integer n) {
-        return null;
+        return splitR(n, this, empty());
+    }
+
+    private Set<A> merge(final Set<A> ys) {
+        if(isEmpty() && ys.isEmpty()){
+            return empty();
+        } else if(isEmpty() && !ys.isEmpty()){
+            return ys;
+        } else if(!isEmpty() && ys.isEmpty()) {
+            return this;
+        } else {
+            ValSet<A> x = (ValSet<A>) this;
+            ValSet<A> y = (ValSet<A>) ys;
+
+            if(x.head().compareTo(y.head()) == -1){
+                return x.tail().merge(y).add(x.head());
+            } else {
+                return y.tail().merge(x).add(y.head());
+            }
+        }
     }
 }
 
