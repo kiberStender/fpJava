@@ -101,17 +101,27 @@ public abstract class Map<K extends Comparable<K>, V> extends Traversable<Map, T
     }
 
     public final Maybe<V> get(final K key){
-        return find(new Fn1<Tuple2<K, V>, Boolean>() {
-            @Override
-            public Boolean apply(Tuple2<K, V> x) {
-                return x._1.equals(key);
+        Integer n = length();
+
+        if(n.equals(0)){
+            return (Maybe<V>) Nothing();
+        } else if(n.equals(1)) {
+          if(head()._1.equals(key)){
+              return new Just<>(head()._2);
+          } else {
+              return (Maybe<V>) Nothing();
+          }
+        } else {
+            final Tuple2<Map<K, V>, Map<K, V>> tp = splitAt(n / 2);
+            final Map<K, V> x = tp._1;
+            final Map<K, V> y = tp._2;
+
+            if(y.head()._1.compareTo(key) > 0){
+                return y.get(key);
+            } else {
+                return x.get(key);
             }
-        }).map(new Fn1<Tuple2<K, V>, V>() {
-            @Override
-            public V apply(Tuple2<K, V> x) {
-                return x._2;
-            }
-        });
+        }
     }
 
     private final Tuple2<Map<K, V>, Map<K, V>> splitR(Integer curN, Map<K, V> curL, Map<K, V> pre){
