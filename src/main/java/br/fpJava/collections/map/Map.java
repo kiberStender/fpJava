@@ -65,16 +65,18 @@ public abstract class Map<K extends Comparable<K>, V> extends Traversable<Map, T
             return add(item);
         } else {
             MapCons<K, V> y =(MapCons<K, V>) this;
+            int compared = y.head()._1.compareTo(item._1);
 
-            switch(item._1.compareTo(y.head()._1)){
-                case 1: return y.tail().cons(item).add(y.head());
-                case 0:
-                    if(item._2.equals(y.head()._2)){
-                        return this;
-                    } else {
-                        return y.tail().cons(item);
-                    }
-                default: return y.tail().add(y.head()).add(item);
+            if(compared < 0){
+                return y.tail().cons(item).add(y.head());
+            } else if(compared == 0){
+                if(item._2.equals(y.head()._2)){
+                    return this;
+                } else {
+                    return y.tail().cons(item);
+                }
+            } else {
+                return y.tail().add(y.head()).add(item);
             }
         }
     }
