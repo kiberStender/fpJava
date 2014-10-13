@@ -13,7 +13,7 @@ public class Just<A> extends Maybe<A> {
     }
 
     public String toString(){
-        return "Some(" + a + ")";
+        return "Just(" + a + ")";
     }
 
     public A get() {
