@@ -117,9 +117,9 @@ public abstract class Map<K extends Comparable<K>, V> extends Traversable<Map, T
             final Map<K, V> y = tp._2;
 
             if(y.head()._1.compareTo(key) > 0){
-                return y.get(key);
-            } else {
                 return x.get(key);
+            } else {
+                return y.get(key);
             }
         }
     }
