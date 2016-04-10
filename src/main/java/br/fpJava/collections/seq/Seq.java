@@ -3,7 +3,7 @@ package br.fpJava.collections.seq;
 import br.fpJava.collections.*;
 import br.fpJava.fn.Fn1;
 import br.fpJava.tuple.Tuple2;
-import br.fpJava.typeclasses.Monad;
+
 import static br.fpJava.collections.seq.Nil.Nil;
 import static br.fpJava.tuple.Tuple2.tuple2;
 
@@ -22,7 +22,7 @@ public abstract class Seq<A> extends Traversable<Seq, A> {
     }
 
     public Seq<A> cons(A item){
-        return new Cons<>(item, this);
+        return Cons.cons(item, this);
     }
 
     private Fn1<Seq<A>, Seq<A>> helper(final Seq<A> acc){

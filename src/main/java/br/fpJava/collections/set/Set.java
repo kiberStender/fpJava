@@ -20,7 +20,7 @@ import static br.fpJava.tuple.Tuple2.tuple2;
 
 public abstract class Set<A extends Comparable<A>> extends Traversable<Set, A> {
 
-    public final static <A extends Comparable<A>> Set<A> Set(final A...as){
+    public final static <A extends Comparable<A>> Set<A> set(final A...as){
         if(as.length == 0){
             return (Set<A>) EmptySet();
         } else {
@@ -40,7 +40,7 @@ public abstract class Set<A extends Comparable<A>> extends Traversable<Set, A> {
     }
 
     protected Set<A> add(A item){
-        return new ValSet<>(item, this);
+        return new ValSet<A>(item, this);
     }
 
     @Override
@@ -176,12 +176,12 @@ class EmptySet extends Set {
 
     @Override
     public Maybe maybeHead() {
-        return Nothing.Nothing();
+        return Nothing.nothing();
     }
 
     @Override
     public Maybe maybeLast() {
-        return Nothing.Nothing();
+        return Nothing.nothing();
     }
 
     @Override
@@ -234,12 +234,12 @@ class ValSet<A extends Comparable<A>> extends Set<A> {
 
     @Override
     public Maybe<A> maybeHead() {
-        return new Just<>(head_);
+        return Just.just(head_);
     }
 
     @Override
     public Maybe<A> maybeLast() {
-        return new Just<>(last());
+        return Just.just(last());
     }
 
     public boolean equals(Object x){

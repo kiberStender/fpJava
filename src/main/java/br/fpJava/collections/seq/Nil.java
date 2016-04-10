@@ -1,9 +1,8 @@
 package br.fpJava.collections.seq;
 
-import br.fpJava.fn.Fn1;
 import br.fpJava.maybe.Maybe;
 
-import static br.fpJava.maybe.Nothing.Nothing;
+import static br.fpJava.maybe.Nothing.nothing;
 
 import java.util.NoSuchElementException;
 
@@ -49,12 +48,12 @@ public class Nil extends Seq<Object>{
 
     @Override
     public Maybe<Object> maybeHead() {
-        return (Maybe<Object>) Nothing();
+        return (Maybe<Object>) nothing();
     }
 
     @Override
     public Maybe<Object> maybeLast() {
-        return (Maybe<Object>) Nothing();
+        return (Maybe<Object>) nothing();
     }
 
     @Override

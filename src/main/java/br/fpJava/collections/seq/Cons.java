@@ -1,10 +1,8 @@
 package br.fpJava.collections.seq;
 
-import br.fpJava.fn.Fn1;
-import br.fpJava.maybe.Just;
 import br.fpJava.maybe.Maybe;
 
-import java.util.NoSuchElementException;
+import static br.fpJava.maybe.Just.just;
 
 /**
  * Created by sirkleber on 09/09/14.
@@ -16,6 +14,10 @@ public class Cons<A> extends Seq<A>{
     public Cons(final A head_, final Seq<A> tail_){
         this.head_ = head_;
         this.tail_ = tail_;
+    }
+
+    public static <A> Seq<A> cons(final A head, final Seq<A> tail){
+        return new Cons<A>(head, tail);
     }
 
     @Override
@@ -36,10 +38,10 @@ public class Cons<A> extends Seq<A>{
     public A last(){ return reverse().head(); }
 
     @Override
-    public Maybe<A> maybeHead() { return new Just<>(head_); }
+    public Maybe<A> maybeHead() { return just(head_); }
 
     @Override
-    public Maybe<A> maybeLast() { return new Just<>(last()); }
+    public Maybe<A> maybeLast() { return just(last()); }
 
     public boolean equals(Object x){
         if(x instanceof Cons){

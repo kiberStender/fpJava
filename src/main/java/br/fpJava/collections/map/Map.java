@@ -8,7 +8,8 @@ import br.fpJava.tuple.Tuple2;
 
 import java.util.NoSuchElementException;
 
-import static br.fpJava.maybe.Nothing.Nothing;
+import static br.fpJava.maybe.Nothing.nothing;
+import static br.fpJava.maybe.Just.just;
 import static br.fpJava.collections.map.EmptyMap.emptyMap;
 import static br.fpJava.tuple.Tuple2.tuple2;
 
@@ -29,11 +30,11 @@ public abstract class Map<K extends Comparable<K>, V> extends Traversable<Map, T
         return tmp;
     }
 
-    public final static <K extends Comparable<K>, V> Map<K, V> Map(final Tuple2<K, V>... tp){
+    public final static <K extends Comparable<K>, V> Map<K, V>map(final Tuple2<K, V>... tp){
         if(tp.length == 0){
             return (Map<K, V>) emptyMap();
         } else {
-            return Map(getTail(tp)).cons(tp[0]);
+            return map(getTail(tp)).cons(tp[0]);
         }
     }
 
@@ -104,12 +105,12 @@ public abstract class Map<K extends Comparable<K>, V> extends Traversable<Map, T
         Integer n = length();
 
         if(n.equals(0)){
-            return (Maybe<V>) Nothing();
+            return (Maybe<V>) nothing();
         } else if(n.equals(1)) {
           if(head()._1.equals(key)){
-              return new Just<>(head()._2);
+              return new Just<V>(head()._2);
           } else {
-              return (Maybe<V>) Nothing();
+              return (Maybe<V>) nothing();
           }
         } else {
             final Tuple2<Map<K, V>, Map<K, V>> tp = splitAt(n / 2);
@@ -187,12 +188,12 @@ class EmptyMap extends Map{
 
     @Override
     public Maybe<Tuple2<?, ?>> maybeHead() {
-        return (Maybe<Tuple2<?, ?>>) Nothing();
+        return (Maybe<Tuple2<?, ?>>) nothing();
     }
 
     @Override
     public Maybe<Tuple2<?, ?>> maybeLast() {
-        return (Maybe<Tuple2<?, ?>>) Nothing();
+        return (Maybe<Tuple2<?, ?>>) nothing();
     }
 }
 
@@ -201,7 +202,7 @@ class MapCons<K extends Comparable<K>, V> extends Map<K, V> {
     private final Tuple2<K, V> head_;
     private final Map<K, V> tail_;
 
-    MapCons(Tuple2<K, V> head_, Map<K, V> tail_) {
+    MapCons(final Tuple2<K, V> head_, final Map<K, V> tail_) {
         this.head_ = head_;
         this.tail_ = tail_;
     }
@@ -209,7 +210,7 @@ class MapCons<K extends Comparable<K>, V> extends Map<K, V> {
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof MapCons){
-            MapCons<K, V> m = (MapCons<K, V>) obj;
+            final MapCons<K, V> m = (MapCons<K, V>) obj;
             return head_.equals(m.head()) && tail_.equals(m.tail());
         } else {
             return false;
@@ -251,11 +252,11 @@ class MapCons<K extends Comparable<K>, V> extends Map<K, V> {
 
     @Override
     public Maybe<Tuple2<K, V>> maybeHead() {
-        return new Just<>(head_);
+        return just(head_);
     }
 
     @Override
     public Maybe<Tuple2<K, V>> maybeLast() {
-        return new Just<>(last());
+        return just(last());
     }
 }

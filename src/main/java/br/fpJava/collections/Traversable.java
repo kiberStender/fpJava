@@ -1,17 +1,15 @@
 package br.fpJava.collections;
 
 import br.fpJava.fn.Fn1;
-import br.fpJava.maybe.Just;
 import br.fpJava.maybe.Maybe;
 import br.fpJava.maybe.Nothing;
 import br.fpJava.tuple.Tuple2;
 import br.fpJava.typeclasses.Monad;
-import br.fpJava.utils.Unit;
 
 import java.util.NoSuchElementException;
 
 import static br.fpJava.tuple.Tuple2.tuple2;
-import static br.fpJava.utils.Unit.unit;
+import static br.fpJava.maybe.Just.just;
 
 /**
  * Created by sirkleber on 09/09/14.
@@ -113,10 +111,10 @@ public abstract class Traversable<T, A> extends Monad<T, A>{
 
     public Maybe<A> find(final Fn1<A, Boolean> p){
         if(isEmpty()){
-            return (Maybe<A>) Nothing.Nothing();
+            return (Maybe<A>) Nothing.nothing();
         } else {
             if(p.apply(head())){
-                return new Just<>(head());
+                return just(head());
             } else {
                 return tail().find(p);
             }
