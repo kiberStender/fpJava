@@ -9,19 +9,19 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
-import static br.fpJava.collections.map.Map.Map;
+import static br.fpJava.collections.map.Map.map;
 import static br.fpJava.tuple.Tuple2.tuple2;
 
 /**
  * Created by sirkleber on 15/09/14.
  */
 public class MapTest {
-    private final Map<Integer, String> mi = Map(tuple2(1, "kleber"), tuple2(2, "eduardo"));
-    private final Map<Integer, Double> md = Map(tuple2(1, 2.0));
+    private final Map<Integer, String> mi = map(tuple2(1, "kleber"), tuple2(2, "eduardo"));
+    private final Map<Integer, Double> md = map(tuple2(1, 2.0));
 
     @Test
     public void testConstructor(){
-        assertEquals(tuple2(1, "Kleber"), Map(tuple2(2, "eduardo"), tuple2(1, "Kleber")).head());
+        assertEquals(tuple2(1, "Kleber"), map(tuple2(2, "eduardo"), tuple2(1, "Kleber")).head());
     }
 
     @Test
@@ -36,27 +36,27 @@ public class MapTest {
 
     @Test
     public void testCons(){
-        assertEquals(Map(tuple2(1, 2.0), tuple2(2, 3.2)), md.cons(tuple2(2, 3.2)));
+        assertEquals(map(tuple2(1, 2.0), tuple2(2, 3.2)), md.cons(tuple2(2, 3.2)));
     }
 
     @Test
     public void testCons1(){
-        assertEquals(Map(tuple2(1, 2.0), tuple2(2, 3.2), tuple2(3, 1.5)), md.cons(tuple2(3, 1.5)).cons(tuple2(2, 3.2)));
+        assertEquals(map(tuple2(1, 2.0), tuple2(2, 3.2), tuple2(3, 1.5)), md.cons(tuple2(3, 1.5)).cons(tuple2(2, 3.2)));
     }
 
     @Test
     public void testCons2() {
-        assertEquals(Map(tuple2(1, 2.0), tuple2(2, 3.2), tuple2(3, 1.5)), md.cons(tuple2(3, 1.7)).cons(tuple2(2, 3.2)).cons(tuple2(3, 1.5)));
+        assertEquals(map(tuple2(1, 2.0), tuple2(2, 3.2), tuple2(3, 1.5)), md.cons(tuple2(3, 1.7)).cons(tuple2(2, 3.2)).cons(tuple2(3, 1.5)));
     }
 
     @Test
     public void testConcat(){
-        assertEquals(Map(tuple2(1, 2.0), tuple2(2, 3.1)), md.concat(Map(tuple2(2, 3.1))));
+        assertEquals(map(tuple2(1, 2.0), tuple2(2, 3.1)), md.concat(map(tuple2(2, 3.1))));
     }
 
     @Test
     public void testConcat1(){
-        assertEquals(Map(tuple2(1, 2.0), tuple2(2, 3.1), tuple2(3, 2.5)), md.concat(Map(tuple2(3, 2.5), tuple2(2, 3.1))));
+        assertEquals(map(tuple2(1, 2.0), tuple2(2, 3.1), tuple2(3, 2.5)), md.concat(map(tuple2(3, 2.5), tuple2(2, 3.1))));
     }
 
     @Test
@@ -66,12 +66,12 @@ public class MapTest {
 
     @Test
     public void testTail(){
-        assertEquals(Map(tuple2(2, "eduardo")), mi.tail());
+        assertEquals(map(tuple2(2, "eduardo")), mi.tail());
     }
 
     @Test
     public void testInit(){
-        assertEquals(Map(tuple2(1, "kleber")), mi.init());
+        assertEquals(map(tuple2(1, "kleber")), mi.init());
     }
 
     @Test
@@ -81,7 +81,7 @@ public class MapTest {
 
     @Test
     public void testFind() throws Exception{
-        assertEquals(new Just<>(tuple2(2, "eduardo")), mi.find(new Fn1<Tuple2<Integer, String>, Boolean>() {
+        assertEquals(Just.just(tuple2(2, "eduardo")), mi.find(new Fn1<Tuple2<Integer, String>, Boolean>() {
             @Override
             public Boolean apply(Tuple2<Integer, String> x) {
                 return x._1.equals(2);
@@ -91,7 +91,7 @@ public class MapTest {
 
     @Test
     public void testGet() throws Exception{
-        assertEquals(new Just<>("eduardo"), mi.get(2));
+        assertEquals(Just.just("eduardo"), mi.get(2));
     }
 
     @Test
@@ -126,7 +126,7 @@ public class MapTest {
 
     @Test
     public void testMap(){
-        assertEquals(Map(tuple2(1, 4.0)), md.map(new Fn1<Tuple2<Integer, Double>, Tuple2<Integer, Double>>() {
+        assertEquals(map(tuple2(1, 4.0)), md.map(new Fn1<Tuple2<Integer, Double>, Tuple2<Integer, Double>>() {
             @Override
             public Tuple2<Integer, Double> apply(Tuple2<Integer, Double> x) {
                 return tuple2(x._1, x._2 * 2);
@@ -136,7 +136,7 @@ public class MapTest {
 
     @Test
     public void testMap1(){
-        assertEquals(Map(tuple2("1k", "kleberl"), tuple2("2k", "eduardol")), mi.map(new Fn1<Tuple2<Integer, String>, Tuple2<String, String>>() {
+        assertEquals(map(tuple2("1k", "kleberl"), tuple2("2k", "eduardol")), mi.map(new Fn1<Tuple2<Integer, String>, Tuple2<String, String>>() {
             @Override
             public Tuple2<String, String> apply(Tuple2<Integer, String> x) {
                 return tuple2(x._1 + "k", x._2 + "l");
@@ -146,38 +146,38 @@ public class MapTest {
 
     @Test
     public void testFlatMap(){
-        assertEquals(Map(tuple2(1, 4.2)), md.flatMap(new Fn1<Tuple2<Integer, Double>, Monad<Map, Tuple2<Integer, Double>>>() {
+        assertEquals(map(tuple2(1, 4.2)), md.flatMap(new Fn1<Tuple2<Integer, Double>, Monad<Map, Tuple2<Integer, Double>>>() {
             @Override
             public Monad<Map, Tuple2<Integer, Double>> apply(final Tuple2<Integer, Double> x) {
-                return Map(tuple2(x._1, x._2 + 2.2));
+                return map(tuple2(x._1, x._2 + 2.2));
             }
         }));
     }
 
     @Test
     public void testFlatMap1(){
-        assertEquals(Map(tuple2("1k", 2.0)), md.flatMap(new Fn1<Tuple2<Integer, Double>, Monad<Map, Tuple2<String, Double>>>() {
+        assertEquals(map(tuple2("1k", 2.0)), md.flatMap(new Fn1<Tuple2<Integer, Double>, Monad<Map, Tuple2<String, Double>>>() {
             @Override
             public Monad<Map, Tuple2<String, Double>> apply(final Tuple2<Integer, Double> x) {
-                return Map(tuple2(x._1 + "k", x._2));
+                return map(tuple2(x._1 + "k", x._2));
             }
         }));
     }
 
     @Test
     public void testSplitAt(){
-        assertEquals(tuple2(Map(tuple2(1, "kleber")), Map(tuple2(2, "eduardo"))), mi.splitAt(1));
+        assertEquals(tuple2(map(tuple2(1, "kleber")), map(tuple2(2, "eduardo"))), mi.splitAt(1));
     }
 
     @Test
     public void testSplitAt1(){
-        final Tuple2<Map<Integer, String>, Map<Integer, String>> v = tuple2(Map(tuple2(1, "kleber")), Map(tuple2(2, "eduardo"), tuple2(3, "scalise")));
+        final Tuple2<Map<Integer, String>, Map<Integer, String>> v = tuple2(map(tuple2(1, "kleber")), map(tuple2(2, "eduardo"), tuple2(3, "scalise")));
         assertEquals(v, mi.cons(tuple2(3, "scalise")).splitAt(1));
     }
 
     @Test
     public void testSplitAt2(){
-        final Tuple2<Map<Integer, String>, Map<Integer, String>> v = tuple2(Map(tuple2(1, "kleber"), tuple2(2, "eduardo")), Map(tuple2(3, "scalise")));
+        final Tuple2<Map<Integer, String>, Map<Integer, String>> v = tuple2(map(tuple2(1, "kleber"), tuple2(2, "eduardo")), map(tuple2(3, "scalise")));
         assertEquals(v, mi.cons(tuple2(3, "scalise")).splitAt(2));
     }
 }

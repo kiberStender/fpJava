@@ -9,14 +9,14 @@ import br.fpJava.utils.Unit;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static br.fpJava.collections.map.Map.Map;
+import static br.fpJava.collections.map.Map.map;
 import static br.fpJava.tuple.Tuple2.tuple2;
 
 /**
  * Created by sirkleber on 25/09/14.
  */
 public class StateTest {
-    private final Map<Integer, Integer> m = Map();
+    private final Map<Integer, Integer> m = map();
 
     //http://tonymorris.github.io/blog/posts/memoisation-with-state-using-scala/
     //fibMemo4 was used as a reference to this function

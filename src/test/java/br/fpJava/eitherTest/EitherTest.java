@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static br.fpJava.either.Right.Right;
-import static br.fpJava.either.Left.Left;
+import static br.fpJava.either.Left.left;
 
 /**
  * Created by sirkleber on 27/09/14.
@@ -16,13 +16,13 @@ public class EitherTest {
         if(n.equals(5)){
             return (Either<String, Integer>) Right(5);
         } else {
-            return (Either<String, Integer>) Left("Nao foi desta vez");
+            return (Either<String, Integer>) left("Nao foi desta vez");
         }
     }
 
     @Test
     public void testGuessMagic(){
-        assertEquals(Left("Não foi desta vez"), guessMagic(2));
+        assertEquals(left("Nao foi desta vez"), guessMagic(2));
     }
 
     @Test

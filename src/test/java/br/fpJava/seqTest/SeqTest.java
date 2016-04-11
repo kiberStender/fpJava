@@ -20,7 +20,7 @@ import static br.fpJava.tuple.Tuple2.tuple2;
  */
 public class SeqTest {
     private Seq<Integer> s = Seq(1, 2, 3);
-    private Seq<Integer> seqi = new Cons<>(1, new Cons<>(2, new Cons<>(3, (Seq<Integer>) Nil())));
+    private Seq<Integer> seqi = Cons.cons(1, Cons.cons(2, Cons.cons(3, (Seq<Integer>) Nil())));
     private Seq<String> seqs = Seq("Joao", "Luiz");
     private Fn1<Integer, Boolean> filter = new Fn1<Integer, Boolean>() {
         @Override
