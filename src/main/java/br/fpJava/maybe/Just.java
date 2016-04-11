@@ -12,6 +12,10 @@ public class Just<A> extends Maybe<A> {
         this.a = a;
     }
 
+    public static <A> Maybe<A> just(final A v){
+        return new Just<A>(v);
+    }
+
     public String toString(){
         return "Just(" + a + ")";
     }

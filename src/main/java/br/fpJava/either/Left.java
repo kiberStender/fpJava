@@ -10,7 +10,7 @@ public class Left<L> extends Either<L, Object> {
         this.value = value;
     }
 
-    public static final <L> Either<L, ?> Left(final L value){
+    public static final <L> Either<L, ?> left(final L value){
         return new Left<L>(value);
     }
 
@@ -27,7 +27,7 @@ public class Left<L> extends Either<L, Object> {
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof Left){
-            Left<L> l = (Left<L>) this;
+            Left<L> l = (Left<L>) obj;
             return value.equals(l.value);
         } else {
             return false;

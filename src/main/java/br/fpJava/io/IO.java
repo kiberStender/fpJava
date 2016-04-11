@@ -11,7 +11,7 @@ import br.fpJava.utils.Unit;
 public class IO<A> extends Monad<IO, A>{
     final Fn<A> value;
 
-    public IO(Fn<A> value) {
+    public IO(final Fn<A> value) {
         this.value = value;
     }
 
@@ -24,22 +24,12 @@ public class IO<A> extends Monad<IO, A>{
     }
 
     public <B> IO<B> map(final Fn1<A,B> func) {
-        return new IO<>(new Fn<B>() {
-            @Override
-            public B apply() {
-                return func.apply(unsafePerformIO());
-            }
-        });
+        return new IO<>(() -> func.apply(unsafePerformIO()));
     }
 
     @Override
     public <B> IO<B> flatMap(final Fn1<A, Monad<IO, B>> f) {
-        return new IO<>(new Fn<B>() {
-            @Override
-            public B apply() {
-                return ((IO<B>) map(f).unsafePerformIO()).unsafePerformIO();
-            }
-        });
+        return new IO<>(() -> ((IO<B>) map(f).unsafePerformIO()).unsafePerformIO());
     }
 
     /**
@@ -48,11 +38,6 @@ public class IO<A> extends Monad<IO, A>{
      * @return
      */
     public IO<Unit> bind_(final IO<Unit> b) {
-        return flatMap(new Fn1<A, Monad<IO, Unit>>() {
-            @Override
-            public IO<Unit> apply(A a) {
-                return b;
-            }
-        });
+        return flatMap(a -> b);
     }
 }

@@ -12,7 +12,7 @@ public class Tuple2<A, B> {
         this._2 = _2;
     }
 
-    public static final <A, B> Tuple2<A, B> tuple2(A _1, B _2){
+    public static <A, B> Tuple2<A, B> tuple2(A _1, B _2){
         return new Tuple2<>(_1, _2);
     }
 
