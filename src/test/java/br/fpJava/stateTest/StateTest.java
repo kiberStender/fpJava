@@ -16,7 +16,7 @@ import static br.fpJava.tuple.Tuple2.tuple2;
  * Created by sirkleber on 25/09/14.
  */
 public class StateTest {
-    private final Map<Integer, Integer> m = map();
+    private final Fn1<Integer, Integer> identity = a -> a;
 
     //http://tonymorris.github.io/blog/posts/memoisation-with-state-using-scala/
     //fibMemo4 was used as a reference to this function
@@ -25,57 +25,18 @@ public class StateTest {
         if(z <= 1){
             return State.insert(z);
         } else {
-            return State.get(new Fn1<Map<Integer, Integer>, Maybe<Integer>>() {
-                @Override
-                public Maybe<Integer> apply(Map<Integer, Integer> m) {
-                    return m.get(z);
-                }
-            }).flatMap(new Fn1<Maybe<Integer>, State<Map<Integer, Integer>, Integer>>() {
-                @Override
-                public State<Map<Integer, Integer>, Integer> apply(final Maybe<Integer> u) {
-                    return ((State<Map<Integer, Integer>, Integer>) u.map(new Fn1<Integer, State<Map<Integer, Integer>, Integer>>() {
-                        @Override
-                        public State<Map<Integer, Integer>, Integer> apply(Integer integer) {
-                            return State.insert(integer);
-                        }
-                    }).getOrElse(new Fn<Object>() {
-                        @Override
-                        public Object apply() {
-                            return fibMemoR(z - 1).flatMap(new Fn1<Integer, State<Map<Integer, Integer>, Integer>>() {
-                                @Override
-                                public State<Map<Integer, Integer>, Integer> apply(final Integer r) {
-                                    return fibMemoR(z - 2).flatMap(new Fn1<Integer, State<Map<Integer, Integer>, Integer>>() {
-                                        @Override
-                                        public State<Map<Integer, Integer>, Integer> apply(final Integer s) {
-                                            return State.mod(new Fn1<Map<Integer, Integer>, Map<Integer, Integer>>() {
-                                                @Override
-                                                public Map<Integer, Integer> apply(Map<Integer, Integer> m) {
-                                                    return m.cons(tuple2(z, r + s));
-                                                }
-                                            }).map(new Fn1<Unit, Integer>() {
-                                                @Override
-                                                public Integer apply(Unit unit) {
-                                                    return r + s;
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    })).map(new Fn1<Integer, Integer>() {
-                        @Override
-                        public Integer apply(Integer v) {
-                            return v;
-                        }
-                    });
-                }
-            });
+            return State.get((Map<Integer, Integer> m) -> m.get(z))
+                    .flatMap((Maybe<Integer> u) -> ((State<Map<Integer, Integer>, Integer>) u.map(i -> State.insert(i))
+                            .getOrElse(() -> fibMemoR(z - 1)
+                                    .flatMap(r -> fibMemoR(z - 2)
+                                            .flatMap(s -> State.mod((Map<Integer, Integer> m) -> m.cons(tuple2(z, r + s)))
+                                                    .map(_u -> r + s)))))
+                            .map(identity));
         }
     }
 
     private Integer fibMemo(Integer n){
-        return fibMemoR(n).evaluate(m);
+        return fibMemoR(n).evaluate(map());
     }
 
     @Test
