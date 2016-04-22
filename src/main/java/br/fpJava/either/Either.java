@@ -12,11 +12,9 @@ public abstract class Either<L, R> {
 
     public <B> B fold(Fn1<R, B> rfn, Fn1<L, B> lfn){
         if(isLeft()){
-            Left<L> l = (Left<L>) this;
-            return lfn.apply(l.value);
+            return lfn.apply(((Left<L>) this).value);
         } else {
-            Right<R> r =(Right<R>) this;
-            return rfn.apply(r.value);
+            return rfn.apply(((Right<R>) this).value);
         }
     }
 
@@ -29,22 +27,12 @@ public abstract class Either<L, R> {
     public boolean equals(Object obj) {
         if(obj instanceof Either){
             if(obj instanceof Left){
-                Left<L> l = (Left<L>) obj;
-
-                return ((Left<L>) this).value == l.value;
-
+                return ((Left<L>) this).value == ((Left<L>) obj).value;
             } else {
-                Right<R> r = (Right<R>) obj;
-
-                return ((Right<R>) this).value == r.value;
+                return ((Right<R>) this).value == ((Right<R>) obj).value;
             }
         } else {
             return false;
         }
-    }
-
-    @Override
-    public String toString() {
-        return super.toString();
     }
 }

@@ -27,8 +27,7 @@ public class Left<L> extends Either<L, Object> {
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof Left){
-            Left<L> l = (Left<L>) obj;
-            return value.equals(l.value);
+            return value.equals(((Left<L>) obj).value);
         } else {
             return false;
         }
