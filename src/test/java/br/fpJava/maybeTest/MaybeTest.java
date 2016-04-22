@@ -19,19 +19,11 @@ import static junit.framework.Assert.assertTrue;
 
 public class MaybeTest {
 
-    private final Fn1<Double, Fn1<Double, Maybe<Double>>> div = new Fn1<Double, Fn1<Double, Maybe<Double>>>() {
-        @Override
-        public Fn1<Double, Maybe<Double>> apply(final Double a) {
-            return new Fn1<Double, Maybe<Double>>() {
-                @Override
-                public Maybe<Double> apply(final Double b) {
-                    if(b == 0) {
-                        return (Maybe<Double>) nothing();
-                    } else {
-                        return Just.just(a / b);
-                    }
-                }
-            };
+    private final Fn1<Double, Fn1<Double, Maybe<Double>>> div = (a) -> (b) -> {
+        if(b == 0) {
+            return (Maybe<Double>) nothing();
+        } else {
+            return Just.just(a / b);
         }
     };
 
@@ -47,46 +39,22 @@ public class MaybeTest {
 
     @Test
     public void testMap() throws NoSuchElementException{
-
-        Maybe<Double> mdb = div.apply(2.0).apply(2.0).map(new Fn1<Double, Double>() {
-            @Override
-            public Double apply(final Double x) {
-                return x * 3;
-            }
-        });
-
-        assertTrue(mdb.get().equals(3.0));
+        assertTrue(div.apply(2.0).apply(2.0).map( x -> x * 3).get().equals(3.0));
     }
 
     @Test
-    public void testFlatMap() throws NoSuchElementException{
-        Maybe<Double> mbd = div.apply(4.0).apply(2.0).flatMap(new Fn1<Double, Monad<Maybe, Double>>() {
-            @Override
-            public Monad<Maybe, Double> apply(Double aDouble) {
-                return new Just<Double>(aDouble * 2.0);
-            }
-        });
-
-        assertTrue(mbd.get().equals(4.0));
+    public void testFlatMap() throws NoSuchElementException {
+        assertTrue(div.apply(4.0).apply(2.0).flatMap((x) -> Just.just(x * 2.0)).get().equals(4.0));
     }
 
     @Test(expected = NoSuchElementException.class)
     public void testGet(){
-        Maybe<Double> mdb = div.apply(4.0).apply(0.0);
-
-        assertTrue(mdb.get() > 0);
+        assertTrue(div.apply(4.0).apply(0.0).get() > 0);
     }
 
     @Test
-    public void testGetOrElse(){
-        Maybe<Double> mdb = div.apply(4.0).apply(2.0);
-
-        assertTrue(mdb.getOrElse(new Fn<Object>() {
-            @Override
-            public Object apply() {
-                return "Error";
-            }
-        }).equals(2.0));
+    public void testGetOrElse() {
+        assertTrue(div.apply(4.0).apply(2.0).getOrElse(() -> "Error").equals(2.0));
     }
 
 }
