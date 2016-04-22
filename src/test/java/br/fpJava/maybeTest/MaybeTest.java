@@ -19,7 +19,7 @@ import static junit.framework.Assert.assertTrue;
 
 public class MaybeTest {
 
-    private final Fn1<Double, Fn1<Double, Maybe<Double>>> div = (a) -> (b) -> {
+    private final Fn1<Double, Fn1<Double, Maybe<Double>>> div = a -> b -> {
         if(b == 0) {
             return (Maybe<Double>) nothing();
         } else {
