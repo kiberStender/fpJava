@@ -7,18 +7,19 @@ import br.fpJava.typeclasses.Monad;
 import java.util.NoSuchElementException;
 
 import static br.fpJava.maybe.Nothing.nothing;
+import static br.fpJava.maybe.Just.just;
 
 /**
  * Created by sirkleber on 07/09/14.
  */
 
-public abstract class Maybe<A> extends Monad<Maybe, A>{
+public abstract class Maybe<A> extends Monad<Maybe, A> {
 
     public <B> Maybe<B> map(Fn1<A, B> f){
         if(this instanceof Nothing){
             return (Maybe<B>) nothing();
         } else {
-            return Just.just(f.apply(get()));
+            return just(f.apply(get()));
         }
     }
 
