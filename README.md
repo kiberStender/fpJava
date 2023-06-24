@@ -41,3 +41,5 @@ br.fpJava <br/>
     Monad -> Done <br/>
   utils <br/>
     Unit -> 5% <br/>
+
+For docs, check the [docs readme](docs/README.md)
