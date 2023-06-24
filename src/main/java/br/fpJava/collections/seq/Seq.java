@@ -2,10 +2,10 @@ package br.fpJava.collections.seq;
 
 import br.fpJava.collections.*;
 import br.fpJava.fn.Fn1;
-import br.fpJava.tuple.Tuple2;
+import br.fpJava.tuple.Pair;
 
 import static br.fpJava.collections.seq.Nil.Nil;
-import static br.fpJava.tuple.Tuple2.tuple2;
+import static br.fpJava.tuple.Pair.of;
 
 import java.util.Arrays;
 import java.util.List;
@@ -81,12 +81,12 @@ public abstract class Seq<A> extends Traversable<Seq, A> {
         });
     }
 
-    private final Tuple2<Seq<A>, Seq<A>> splitR(Integer curN, Seq<A> curL, Seq<A> pre){
+    private final Pair<Seq<A>, Seq<A>> splitR(Integer curN, Seq<A> curL, Seq<A> pre){
         if(curL.isEmpty()){
-            return tuple2(pre.reverse(), empty());
+            return of(pre.reverse(), empty());
         } else {
             if(curN.equals(0)){
-                return tuple2(pre.reverse(), curL);
+                return of(pre.reverse(), curL);
             } else {
                 Cons<A> c = (Cons<A>) curL;
                 return splitR(curN - 1, c.tail(), pre.cons(c.head()));
@@ -95,7 +95,7 @@ public abstract class Seq<A> extends Traversable<Seq, A> {
     }
 
     @Override
-    public Tuple2<Seq<A>, Seq<A>> splitAt(Integer n) {
+    public Pair<Seq<A>, Seq<A>> splitAt(Integer n) {
         return splitR(n, this, empty());
     }
 }

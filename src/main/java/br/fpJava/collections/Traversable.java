@@ -3,12 +3,11 @@ package br.fpJava.collections;
 import br.fpJava.fn.Fn1;
 import br.fpJava.maybe.Maybe;
 import br.fpJava.maybe.Nothing;
-import br.fpJava.tuple.Tuple2;
+import br.fpJava.tuple.Pair;
 import br.fpJava.typeclasses.Monad;
 
 import java.util.NoSuchElementException;
 
-import static br.fpJava.tuple.Tuple2.tuple2;
 import static br.fpJava.maybe.Just.just;
 
 /**
@@ -105,8 +104,8 @@ public abstract class Traversable<T, A> extends Monad<T, A>{
         });
     }
 
-    public final <I extends Traversable<T, A>> Tuple2<I, I> partition(final Fn1<A, Boolean> p){
-        return tuple2((I) filter(p), (I) filterNot(p));
+    public final <I extends Traversable<T, A>> Pair<I, I> partition(final Fn1<A, Boolean> p){
+        return Pair.of((I) filter(p), (I) filterNot(p));
     }
 
     public Maybe<A> find(final Fn1<A, Boolean> p){
@@ -121,7 +120,7 @@ public abstract class Traversable<T, A> extends Monad<T, A>{
         }
     }
 
-    public abstract <I extends Traversable<T, A>> Tuple2<I, I> splitAt(final Integer n);
+    public abstract <I extends Traversable<T, A>> Pair<I, I> splitAt(final Integer n);
 
     public <B> B foldLeft(final B acc, final Fn1<B, Fn1<A, B>> f){
         if(isEmpty()){
