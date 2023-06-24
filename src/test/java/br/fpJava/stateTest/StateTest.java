@@ -1,16 +1,14 @@
 package br.fpJava.stateTest;
 
 import br.fpJava.collections.map.Map;
-import br.fpJava.fn.Fn;
 import br.fpJava.fn.Fn1;
 import br.fpJava.maybe.Maybe;
 import br.fpJava.state.State;
-import br.fpJava.utils.Unit;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static br.fpJava.collections.map.Map.map;
-import static br.fpJava.tuple.Tuple2.tuple2;
+import static br.fpJava.tuple.Pair.of;
 
 /**
  * Created by sirkleber on 25/09/14.
@@ -29,7 +27,7 @@ public class StateTest {
                     .flatMap((Maybe<Integer> u) -> ((State<Map<Integer, Integer>, Integer>) u.map(i -> State.insert(i))
                             .getOrElse(() -> fibMemoR(z - 1)
                                     .flatMap(r -> fibMemoR(z - 2)
-                                            .flatMap(s -> State.mod((Map<Integer, Integer> m) -> m.cons(tuple2(z, r + s)))
+                                            .flatMap(s -> State.mod((Map<Integer, Integer> m) -> m.cons(of(z, r + s)))
                                                     .map(_u -> r + s)))))
                             .map(identity));
         }

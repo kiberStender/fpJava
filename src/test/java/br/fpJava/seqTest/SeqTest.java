@@ -13,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static br.fpJava.collections.seq.Seq.Seq;
 import static br.fpJava.collections.seq.Nil.Nil;
-import static br.fpJava.tuple.Tuple2.tuple2;
+import static br.fpJava.tuple.Pair.of;
 
 /**
  * Created by sirkleber on 09/09/14.
@@ -161,7 +161,7 @@ public class SeqTest {
 
     @Test
     public void testPartition(){
-        assertEquals(tuple2(Seq(2), Seq(1, 3)), seqi.partition(filter));
+        assertEquals(of(Seq(2), Seq(1, 3)), seqi.partition(filter));
     }
 
     @Test
@@ -239,6 +239,6 @@ public class SeqTest {
 
     @Test
     public void testSplit(){
-        assertEquals(tuple2(Seq(1, 2), Seq(3)), seqi.splitAt(2));
+        assertEquals(of(Seq(1, 2), Seq(3)), seqi.splitAt(2));
     }
 }

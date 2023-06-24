@@ -5,14 +5,12 @@ import br.fpJava.fn.Fn1;
 import br.fpJava.maybe.Just;
 import br.fpJava.maybe.Maybe;
 import br.fpJava.maybe.Nothing;
-import br.fpJava.tuple.Tuple2;
+import br.fpJava.tuple.Pair;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import static br.fpJava.collections.set.EmptySet.EmptySet;
-import static br.fpJava.tuple.Tuple2.tuple2;
+import static br.fpJava.tuple.Pair.of;
 
 /**
  * Created by sirkleber on 10/10/14.
@@ -98,12 +96,12 @@ public abstract class Set<A extends Comparable<A>> extends Traversable<Set, A> {
         }
     }
 
-    private final Tuple2<Set<A>, Set<A>> splitR(Integer curN, Set<A> curL, Set<A> pre){
+    private final Pair<Set<A>, Set<A>> splitR(Integer curN, Set<A> curL, Set<A> pre){
         if(curL.isEmpty()){
-            return tuple2(pre, empty());
+            return of(pre, empty());
         } else {
             if(curN.equals(0)){
-                return tuple2(pre, curL);
+                return of(pre, curL);
             } else {
                 ValSet<A> c = (ValSet<A>) curL;
                 return splitR(curN - 1, c.tail(), pre.cons(c.head()));
@@ -112,7 +110,7 @@ public abstract class Set<A extends Comparable<A>> extends Traversable<Set, A> {
     }
 
     @Override
-    public Tuple2<Set<A>, Set<A>> splitAt(Integer n) {
+    public Pair<Set<A>, Set<A>> splitAt(Integer n) {
         return splitR(n, this, empty());
     }
 
